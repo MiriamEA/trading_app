@@ -3,9 +3,9 @@ package ca.jrvs.apps.trading.model.domain;
 public class Quote implements Entity<String> {
 
     private double askPrice;
-    private long askSize;
+    private int askSize;
     private double bidPrice;
-    private long bidSize;
+    private int bidSize;
     private String id;
     private double lastPrice;
     private String ticker;
@@ -18,11 +18,11 @@ public class Quote implements Entity<String> {
         this.askPrice = askPrice;
     }
 
-    public long getAskSize() {
+    public int getAskSize() {
         return askSize;
     }
 
-    public void setAskSize(long askSize) {
+    public void setAskSize(int askSize) {
         this.askSize = askSize;
     }
 
@@ -34,11 +34,11 @@ public class Quote implements Entity<String> {
         this.bidPrice = bidPrice;
     }
 
-    public long getBidSize() {
+    public int getBidSize() {
         return bidSize;
     }
 
-    public void setBidSize(long bidSize) {
+    public void setBidSize(int bidSize) {
         this.bidSize = bidSize;
     }
 
