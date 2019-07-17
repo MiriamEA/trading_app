@@ -1,6 +1,7 @@
 package ca.jrvs.apps.trading.dao;
 
 import ca.jrvs.apps.trading.JsonUtil;
+import ca.jrvs.apps.trading.model.config.MarketDataConfig;
 import ca.jrvs.apps.trading.model.domain.IexQuote;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -28,11 +29,11 @@ public class MarketDataDao {
     private HttpClientConnectionManager connectionManager;
 
     @Autowired
-    public MarketDataDao(HttpClientConnectionManager connectionManager) {
+    public MarketDataDao(HttpClientConnectionManager connectionManager, MarketDataConfig marketDataConfig) {
         this.connectionManager = connectionManager;
-        String token = System.getenv("IEX_TOKEN");
-        StringBuilder sb = new StringBuilder("https://cloud.iexapis.com/stable/stock/market/batch?token=");
-        sb.append(token);
+        StringBuilder sb = new StringBuilder(marketDataConfig.getHost());
+        sb.append("stable/stock/market/batch?token=");
+        sb.append(marketDataConfig.getToken());
         sb.append("&types=quote&symbols=");
         BATCH_QUOTE_URI = sb.toString();
     }
