@@ -1,8 +1,7 @@
 package ca.jrvs.apps.trading.dao;
 
+import ca.jrvs.apps.trading.JsonUtil;
 import ca.jrvs.apps.trading.model.domain.IexQuote;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -12,19 +11,23 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@Repository
 public class MarketDataDao {
 
     private final String BATCH_QUOTE_URI;
     private Logger logger = LoggerFactory.getLogger(MarketDataDao.class);
     private HttpClientConnectionManager connectionManager;
 
+    @Autowired
     public MarketDataDao(HttpClientConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
         String token = System.getenv("IEX_TOKEN");
@@ -35,20 +38,24 @@ public class MarketDataDao {
     }
 
     public IexQuote findIexQuoteByTicker(String ticker) {
-        List<IexQuote> quotes = findIexQuoteByTicker(Arrays.asList(ticker));
+        List<IexQuote> quotes = findIexQuoteByTickers(Arrays.asList(ticker));
+        if (quotes == null || quotes.size() != 1) {
+            throw new DataRetrievalFailureException("Failed to get correct iexQuote");
+        }
         return quotes.get(0);
     }
 
-    public List<IexQuote> findIexQuoteByTicker(List<String> tickers) {
+    public List<IexQuote> findIexQuoteByTickers(List<String> tickers) {
         String uri = getURI(tickers);
         logger.info("Get URI :" + uri);
         String response = executeHttpGet(uri);
 
-        JSONObject jsonObject = new JSONObject(response);
-        if (jsonObject.length() != tickers.size()) {
+        JSONObject responseAsJsonObject = new JSONObject(response);
+        if (responseAsJsonObject.length() != tickers.size()) {
             throw new IllegalArgumentException("Invalid ticker");
         }
-        return fromJsonObjectToQuoteList(jsonObject);
+        List<IexQuote> iexQuotes = fromJsonObjectToQuoteList(responseAsJsonObject);
+        return iexQuotes;
     }
 
     private String getURI(List<String> tickers) {
@@ -79,29 +86,23 @@ public class MarketDataDao {
     }
 
     private List<IexQuote> fromJsonObjectToQuoteList(JSONObject jsonObject) {
-        List<IexQuote> quotes = new LinkedList<>();
+        List<IexQuote> iexQuotes = new LinkedList<>();
         for (String key : jsonObject.keySet()) {
             JSONObject object = jsonObject.getJSONObject(key);
             Object o = object.get("quote");
             try {
-                IexQuote iexQuote = toObjectFromJson(object.get("quote").toString(), IexQuote.class);
-                quotes.add(iexQuote);
+                IexQuote iexQuote = JsonUtil.toObjectFromJson(object.get("quote").toString(), IexQuote.class);
+                iexQuotes.add(iexQuote);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Failed to convert JSON string to IexQuote.", e);
             }
         }
-        return quotes;
+        return iexQuotes;
     }
 
     private CloseableHttpClient getHttpClient() {
         return HttpClients.custom().setConnectionManager(connectionManager)
                 //prevent connectionManager shutdown when calling httpClient.close()
                 .setConnectionManagerShared(true).build();
-    }
-
-    private <T> T toObjectFromJson(String json, Class clazz) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return (T) mapper.readValue(json, clazz);
     }
 }
