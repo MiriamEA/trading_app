@@ -34,7 +34,7 @@ public interface CrudRespository<E, ID> {
      * {@literal false} otherwise.
      * @throws IllegalArgumentException  if {@code id} id {@literal null}.
      * @throws java.sql.SQLException     if sql execution failed.
-     * @throws ResourceNotFoundException if no entity is found i db
+     * @throws ResourceNotFoundException if no entity is found in db
      */
     boolean existsById(ID id);
 
