@@ -37,29 +37,17 @@ public class QuoteService {
     }
 
     /**
-     * Add a list of new tickers to the quote table. Skip existing ticker(s).
-     * - Get iexQuote(s)
-     * - convert each iexQuote to Quote entity
-     * - persist the quote to db
-     *
-     * @param tickers a list ofi tickers/symbols
-     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if ticker is not found from IEX
-     * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
-     * @throws IllegalArgumentException                           for invalid input
+     * Parses a string to a double. If the string is null the defaultValue will be returned.
+     * @param s String to parse
+     * @param defaultValue default value in case the String is null
+     * @return double from string or default value
      */
-    public void initQuotes(List<String> tickers) {
-        if (tickers == null || tickers.isEmpty()) {
-            throw new IllegalArgumentException("Tickers must contain at least on ticker.");
+    private static double parseDouble(String s, double defaultValue) {
+        double result = defaultValue;
+        if (s != null) {
+            result = Double.parseDouble(s);
         }
-
-        List<IexQuote> iexQuotes = marketDataDao.findIexQuoteByTickers(tickers);
-        for (IexQuote iexQuote : iexQuotes) {
-            //if (!quoteDao.existsById(iexQuote.getSymbol())) {
-            if (!quoteDao.getAllIds().contains(iexQuote.getSymbol())) {
-                Quote quote = buildQuoteFromIexQuote(iexQuote);
-                quoteDao.save(quote);
-            }
-        }
+        return result;
     }
 
     /**
@@ -86,14 +74,13 @@ public class QuoteService {
         return quote;
     }
 
-    private static double parseDouble(String s, double defaultValue) {
-        double result = defaultValue;
-        if (s != null) {
-            result = Double.parseDouble(s);
-        }
-        return result;
-    }
-
+    /**
+     * Parses a string to an integer. If the string is null the defaultValue will be returned.
+     *
+     * @param s            String to parse
+     * @param defaultValue default value in cas the String is null
+     * @return integer from string or default value
+     */
     private static int parseInt(String s, int defaultValue) {
         int result = defaultValue;
         if (s != null) {
@@ -103,11 +90,29 @@ public class QuoteService {
     }
 
     /**
+     * Add a list of new tickers to the quote table. Skip existing ticker(s).
+     *
+     * @param tickers a list ofi tickers/symbols
+     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if ticker is not found from IEX
+     * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
+     * @throws IllegalArgumentException                           for invalid input
+     */
+    public void initQuotes(List<String> tickers) {
+        if (tickers == null || tickers.isEmpty()) {
+            throw new IllegalArgumentException("At least on ticker is required.");
+        }
+
+        List<IexQuote> iexQuotes = marketDataDao.findIexQuoteByTickers(tickers);
+        for (IexQuote iexQuote : iexQuotes) {
+            if (!quoteDao.getAllIds().contains(iexQuote.getSymbol())) {
+                Quote quote = buildQuoteFromIexQuote(iexQuote);
+                quoteDao.save(quote);
+            }
+        }
+    }
+
+    /**
      * Update quote table against IEX source
-     * - get all quotes from the db
-     * - foreach ticker get iexQuote
-     * - convert iexQuote to quote entity
-     * - persist quote to db
      *
      * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if ticker is not found from IEX
      * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
