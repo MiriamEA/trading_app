@@ -81,8 +81,10 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         getJdbcTemplate().update("delete from " + getTableName() + " where " + getIdName() + " = ?", id);
     }
 
-    public List<E> getAllIds() {
-        List<E> allIds = getJdbcTemplate().queryForList("select " + getIdName() + " from " + getTableName(), getEntityClass());
+    public List<ID> getAllIds() {
+        List<ID> allIds = getJdbcTemplate().queryForList("select " + getIdName() + " from " + getTableName(), getIdClass());
         return allIds;
     }
+
+    public abstract Class getIdClass();
 }

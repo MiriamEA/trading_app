@@ -19,7 +19,7 @@ public class QuoteDao extends JdbcCrudDao<Quote, String> {
     @Autowired
     public QuoteDao(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME);//.usingGeneratedKeyColumns(ID_NAME);
+        simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME);
     }
 
     @Override
@@ -35,6 +35,11 @@ public class QuoteDao extends JdbcCrudDao<Quote, String> {
     @Override
     public String getTableName() {
         return TABLE_NAME;
+    }
+
+    @Override
+    public Class getIdClass() {
+        return String.class;
     }
 
     @Override
