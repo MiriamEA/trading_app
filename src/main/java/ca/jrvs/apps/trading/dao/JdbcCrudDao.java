@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudRespository<E, ID> {
 
-    private final Logger logger = LoggerFactory.getLogger(getEntityClass());
+    public final Logger logger = LoggerFactory.getLogger(getEntityClass());
 
     @Override
     public E save(E entity) {
@@ -59,7 +59,8 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
     public E findById(String idName, ID id, Class clazz) {
         E entity = null;
         try {
-            entity = (E) getJdbcTemplate().queryForObject("select * from " + getTableName() + " Where " + idName + " = ?", BeanPropertyRowMapper.newInstance(clazz), id);
+            String sql = "select * from " + getTableName() + " Where " + idName + " = ?";
+            entity = (E) getJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(clazz), id);
         } catch (EmptyResultDataAccessException e) {
             logger.debug("Cannot find " + clazz + " id: " + id, e);
         }
