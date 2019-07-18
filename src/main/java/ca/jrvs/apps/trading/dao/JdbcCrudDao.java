@@ -48,7 +48,7 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         }
         String idName = getIdName();
         Class clazz = getEntityClass();
-        return findById(idName, id, clazz);
+        return findById(idName, id, clazz, true);
     }
 
     abstract public String getIdName();
@@ -56,10 +56,13 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
     abstract public Class getEntityClass();
 
     //Helper method
-    public E findById(String idName, ID id, Class clazz) {
+    public E findById(String idName, ID id, Class clazz, boolean forUpdate) {
         E entity = null;
         try {
             String sql = "select * from " + getTableName() + " Where " + idName + " = ?";
+            if (forUpdate) {
+                sql = sql + " for update";
+            }
             entity = (E) getJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(clazz), id);
         } catch (EmptyResultDataAccessException e) {
             logger.debug("Cannot find " + clazz + " id: " + id, e);

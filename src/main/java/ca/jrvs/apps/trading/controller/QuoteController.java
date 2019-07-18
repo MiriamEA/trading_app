@@ -30,7 +30,6 @@ public class QuoteController {
     public IexQuote getQuote(@PathVariable String ticker) {
         try {
             IexQuote iexQuote = marketDataDao.findIexQuoteByTicker(ticker);
-
             return iexQuote;
         } catch (Exception e) {
             throw ResponseExceptionUtil.getResponseStatusException(e);
