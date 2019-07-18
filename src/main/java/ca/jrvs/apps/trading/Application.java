@@ -24,7 +24,13 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Quote quote = new Quote();
-        quote.setTicker("A");
-        System.out.println(quoteDao.save(quote));
+        quote.setTicker("AA");
+        quote.setAskPrice(63.3);
+        System.out.println(quoteDao.save(quote).getTicker());
+        System.out.println(quoteDao.findById("AA").getAskPrice());
+        System.out.println(quoteDao.existsById("AA"));
+        quoteDao.deleteById("AA");
+        System.out.println(quoteDao.findById("AA").getTicker());
+        System.out.println("done");
     }
 }

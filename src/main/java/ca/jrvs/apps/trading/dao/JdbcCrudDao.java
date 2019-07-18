@@ -19,8 +19,7 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(entity);
         SimpleJdbcInsert simpleJdbcInsert = getSimpleJdbcInsert();
         if (simpleJdbcInsert.getGeneratedKeyNames().length == 1) {
-            ID newId = (ID) simpleJdbcInsert.executeAndReturnKey(parameterSource); //always returns a number but id
-            // is not always a number, don't always need this line
+            ID newId = (ID) simpleJdbcInsert.executeAndReturnKey(parameterSource);
             logger.info("New id: " + newId);
             entity.setId(newId);
         } else {
@@ -49,9 +48,10 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
     public E findById(String idName, ID id, Class clazz) {
         E entity = null;
         try {
-            entity = (E) getJdbcTemplate().queryForObject("select * from " + getTableName() + " Where " + idName + " =" + " ?", BeanPropertyRowMapper.newInstance(clazz), id);
+            entity = (E) getJdbcTemplate().queryForObject("select * from " + getTableName() + " Where " + idName + " = ?", BeanPropertyRowMapper.newInstance(clazz), id);
         } catch (EmptyResultDataAccessException e) {
             logger.debug("Cannot find id: " + id, e);
+            throw new ResourceNotFoundException("Cannot find id:" + id);
         }
         return entity;
     }
@@ -65,12 +65,7 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null.");
         }
-        return existsById(getIdName(), id);
-    }
-
-    //Helper method
-    public boolean existsById(String idName, ID id) {
-        E entity = findById(idName, id, getEntityClass());
+        E entity = findById(id);
         return entity != null;
     }
 
