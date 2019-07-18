@@ -4,6 +4,7 @@ import ca.jrvs.apps.trading.dao.MarketDataDao;
 import ca.jrvs.apps.trading.dao.QuoteDao;
 import ca.jrvs.apps.trading.model.domain.IexQuote;
 import ca.jrvs.apps.trading.service.QuoteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +14,14 @@ import org.springframework.web.bind.annotation.*;
 public class QuoteController {
 
     private MarketDataDao marketDataDao;
+    private QuoteDao quoteDao;
+    private QuoteService quoteService;
 
+    @Autowired
     public QuoteController(QuoteService quoteService, QuoteDao quoteDao, MarketDataDao marketDataDao) {
         this.marketDataDao = marketDataDao;
+        this.quoteDao = quoteDao;
+        this.quoteService = quoteService;
     }
 
     @GetMapping(path = "/iex/ticker/{ticker}")
