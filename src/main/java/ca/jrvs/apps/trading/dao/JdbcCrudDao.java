@@ -70,9 +70,17 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         return entity;
     }
 
-    abstract public JdbcTemplate getJdbcTemplate();
-
     abstract public String getTableName();
+
+    /**
+     * Gets all values from the id column
+     *
+     * @return List containing all ids in a table
+     */
+    public List<ID> getAllIds() {
+        List<ID> allIds = getJdbcTemplate().queryForList("select " + getIdName() + " from " + getTableName(), getIdClass());
+        return allIds;
+    }
 
     @Override
     public void deleteById(ID id) {
@@ -82,10 +90,7 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         getJdbcTemplate().update("delete from " + getTableName() + " where " + getIdName() + " = ?", id);
     }
 
-    public List<ID> getAllIds() {
-        List<ID> allIds = getJdbcTemplate().queryForList("select " + getIdName() + " from " + getTableName(), getIdClass());
-        return allIds;
-    }
+    abstract public JdbcTemplate getJdbcTemplate();
 
     public abstract Class getIdClass();
 }
