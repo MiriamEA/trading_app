@@ -32,7 +32,7 @@ public class MarketDataDao {
     public MarketDataDao(HttpClientConnectionManager connectionManager, MarketDataConfig marketDataConfig) {
         this.connectionManager = connectionManager;
         StringBuilder sb = new StringBuilder(marketDataConfig.getHost());
-        sb.append("stable/stock/market/batch?token=");
+        sb.append("stock/market/batch?token=");
         sb.append(marketDataConfig.getToken());
         sb.append("&types=quote&symbols=");
         BATCH_QUOTE_URI = sb.toString();
