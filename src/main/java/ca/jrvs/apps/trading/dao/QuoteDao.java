@@ -51,4 +51,16 @@ public class QuoteDao extends JdbcCrudDao<Quote, String> {
     public Class getEntityClass() {
         return Quote.class;
     }
+
+    public void updateQuote(Quote quote) {
+        updateColumn(quote.getAskPrice(), "askPrice");
+        updateColumn(quote.getAskSize(), "askSize");
+        updateColumn(quote.getBidPrice(), "bidPrice");
+        updateColumn(quote.getBidSize(), "bidSize");
+        updateColumn(quote.getLastPrice(), "lastPrice");
+    }
+
+    private void updateColumn(Number value, String columnName) {
+        jdbcTemplate.update("UPDATE " + TABLE_NAME + " SET " + columnName + " =?", value);
+    }
 }
