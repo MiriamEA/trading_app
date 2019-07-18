@@ -1,5 +1,6 @@
 package ca.jrvs.apps.trading.dao;
 
+import ca.jrvs.apps.trading.model.config.MarketDataConfig;
 import ca.jrvs.apps.trading.model.domain.IexQuote;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
@@ -19,7 +20,8 @@ public class MarketDataDaoIntTest {
     @Before
     public void setup() {
         HttpClientConnectionManager connectionManager = new BasicHttpClientConnectionManager();
-        marketDataDao = new MarketDataDao(connectionManager);
+        MarketDataConfig config = new MarketDataConfig();
+        marketDataDao = new MarketDataDao(connectionManager, config);
     }
 
     @Test
@@ -33,7 +35,7 @@ public class MarketDataDaoIntTest {
     public void findIexQuoteByTickerList() {
         List<String> tickerList = new LinkedList<>();
         tickerList.addAll(Arrays.asList("AAPL", "FB"));
-        List<IexQuote> iexQuotes = marketDataDao.findIexQuoteByTicker(tickerList);
+        List<IexQuote> iexQuotes = marketDataDao.findIexQuoteByTickers(tickerList);
         assertEquals(tickerList.size(), iexQuotes.size());
         assertTrue(tickerList.contains(iexQuotes.get(0).getSymbol()));
         assertTrue(tickerList.contains(iexQuotes.get(1).getSymbol()));
