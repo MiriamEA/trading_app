@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import java.util.List;
+
 public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudRespository<E, ID> {
 
     private final Logger logger = LoggerFactory.getLogger(getEntityClass());
@@ -31,6 +33,15 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
     abstract public SimpleJdbcInsert getSimpleJdbcInsert();
 
     @Override
+    public boolean existsById(ID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null.");
+        }
+        E entity = findById(id);
+        return entity != null;
+    }
+
+    @Override
     public E findById(ID id) {
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null.");
@@ -50,8 +61,10 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         try {
             entity = (E) getJdbcTemplate().queryForObject("select * from " + getTableName() + " Where " + idName + " = ?", BeanPropertyRowMapper.newInstance(clazz), id);
         } catch (EmptyResultDataAccessException e) {
-            logger.debug("Cannot find id: " + id, e);
-            throw new ResourceNotFoundException("Cannot find id:" + id);
+            logger.debug("Cannot find " + clazz + " id: " + id, e);
+        }
+        if (entity == null) {
+            throw new ResourceNotFoundException("Resource not found.");
         }
         return entity;
     }
@@ -61,19 +74,15 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
     abstract public String getTableName();
 
     @Override
-    public boolean existsById(ID id) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID cannot be null.");
-        }
-        E entity = findById(id);
-        return entity != null;
-    }
-
-    @Override
     public void deleteById(ID id) {
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null.");
         }
         getJdbcTemplate().update("delete from " + getTableName() + " where " + getIdName() + " = ?", id);
+    }
+
+    public List<E> getAllIds() {
+        List<E> allIds = getJdbcTemplate().queryForList("select " + getIdName() + " from " + getTableName(), getEntityClass());
+        return allIds;
     }
 }
