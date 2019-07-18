@@ -74,11 +74,6 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null.");
         }
-        deleteById(getIdName(), id);
-    }
-
-    //Helper method
-    public void deleteById(String idName, ID id) {
-
+        getJdbcTemplate().update("delete from " + getTableName() + " where " + getIdName() + " = ?", id);
     }
 }

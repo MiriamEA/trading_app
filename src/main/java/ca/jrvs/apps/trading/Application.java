@@ -30,7 +30,6 @@ public class Application implements CommandLineRunner {
         System.out.println(quoteDao.findById("AA").getAskPrice());
         System.out.println(quoteDao.existsById("AA"));
         quoteDao.deleteById("AA");
-        System.out.println(quoteDao.findById("AA").getTicker());
         System.out.println("done");
     }
 }
