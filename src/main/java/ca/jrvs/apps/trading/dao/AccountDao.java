@@ -2,6 +2,7 @@ package ca.jrvs.apps.trading.dao;
 
 import ca.jrvs.apps.trading.model.domain.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
@@ -48,5 +49,31 @@ public class AccountDao extends JdbcCrudDao<Account, Integer> {
     @Override
     public Class getEntityClass() {
         return Account.class;
+    }
+
+    /**
+     * Retrieves an account by its traderId.
+     *
+     * @param traderId id must not be
+     * @return account associated with given trader id
+     * @throws java.sql.SQLException     if sql execution failed.
+     * @throws ResourceNotFoundException if no entity is found in db
+     */
+    public Account findByTraderId(int traderId) {
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE trader_id = ?";
+        Account account = jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Account.class), traderId);
+        return account;
+    }
+
+    /**
+     * Updates account information in db
+     *
+     * @param amount   the new amount to save
+     * @param traderId id of account owner
+     * @throws java.sql.SQLException if sql execution failed.
+     */
+    public void updateAmountById(double amount, int traderId) {
+        String sql = "UPDATE " + TABLE_NAME + " SET amount =? where trader_id = " + traderId;
+        jdbcTemplate.update(sql, amount);
     }
 }
