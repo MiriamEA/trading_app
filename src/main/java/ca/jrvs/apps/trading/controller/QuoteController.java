@@ -62,4 +62,26 @@ public class QuoteController {
         }
     }
 
+    @PutMapping(path = "/")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void updateQuote(Quote quote) {
+        try {
+            quoteDao.updateQuote(quote);
+        } catch (Exception e) {
+            throw ResponseExceptionUtil.getResponseStatusException(e);
+        }
+    }
+
+    @PutMapping(path = "/IexMarketData")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void updateMarketData() {
+        try {
+            quoteService.updateMarketData();
+        } catch (Exception e) {
+            throw ResponseExceptionUtil.getResponseStatusException(e);
+        }
+    }
+
 }
