@@ -1,32 +1,49 @@
 package ca.jrvs.apps.trading.model.domain;
 
-public class Account implements Entity<Integer> {
-    private int id;
-    private double amount;
-    private int traderId;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({"id", "traderId", "amount"})
+public class Account implements Entity<Integer> {
+
+    @JsonProperty("id")
+    private Integer id;
+    @JsonProperty("traderId")
+    private Integer traderId;
+    @JsonProperty("amount")
+    private Double amount;
+
+    @JsonProperty("id")
     @Override
     public Integer getId() {
         return id;
     }
 
+    @JsonProperty("id")
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public int getTraderId() {
+    @JsonProperty("traderId")
+    public Integer getTraderId() {
         return traderId;
     }
 
-    public void setTraderId(int traderId) {
+    @JsonProperty("traderId")
+    public void setTraderId(Integer traderId) {
         this.traderId = traderId;
+    }
+
+    @JsonProperty("amount")
+    public Double getAmount() {
+        return amount;
+    }
+
+    @JsonProperty("amount")
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }

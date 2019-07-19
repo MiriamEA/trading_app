@@ -1,41 +1,57 @@
 package ca.jrvs.apps.trading.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({"accountId", "ticker", "position"})
 public class Position implements Entity<Integer> {
-    private int accountId;
-    private int position;
+
+    @JsonProperty("accountId")
+    private Integer accountId;
+    @JsonProperty("ticker")
     private String ticker;
+    @JsonProperty("position")
+    private Integer position;
 
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
+    @JsonProperty("ticker")
     public String getTicker() {
         return ticker;
     }
 
+    @JsonProperty("ticker")
     public void setTicker(String ticker) {
         this.ticker = ticker;
     }
 
+    @JsonProperty("position")
+    public Integer getPosition() {
+        return position;
+    }
+
+    @JsonProperty("position")
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
     @Override
     public Integer getId() {
+        return getAccountId();
+    }
+
+    @JsonProperty("accountId")
+    public Integer getAccountId() {
         return accountId;
+    }
+
+    @JsonProperty("accountId")
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
     }
 
     @Override
     public void setId(Integer id) {
-        accountId = id;
+        setAccountId(id);
     }
 }

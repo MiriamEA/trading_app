@@ -1,61 +1,85 @@
 package ca.jrvs.apps.trading.model.domain;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({"id", "firstName", "lastName", "dob", "country", "email"})
 public class Trader implements Entity<Integer> {
-    private String country;
-    private String email;
+
+    @JsonProperty("id")
+    private Integer id;
+    @JsonProperty("firstName")
     private String firstName;
+    @JsonProperty("lastName")
     private String lastName;
-    private int id;
-    private Date dob;
+    @JsonProperty("dob")
+    private String dob;
+    @JsonProperty("country")
+    private String country;
+    @JsonProperty("email")
+    private String email;
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
+    @JsonProperty("id")
     @Override
     public Integer getId() {
         return id;
     }
 
+    @JsonProperty("id")
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public Date getDob() {
+    @JsonProperty("firstName")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @JsonProperty("firstName")
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @JsonProperty("lastName")
+    public String getLastName() {
+        return lastName;
+    }
+
+    @JsonProperty("lastName")
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @JsonProperty("dob")
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    @JsonProperty("dob")
+    public void setDob(String dob) {
         this.dob = dob;
+    }
+
+    @JsonProperty("country")
+    public String getCountry() {
+        return country;
+    }
+
+    @JsonProperty("country")
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    @JsonProperty("email")
+    public String getEmail() {
+        return email;
+    }
+
+    @JsonProperty("email")
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
