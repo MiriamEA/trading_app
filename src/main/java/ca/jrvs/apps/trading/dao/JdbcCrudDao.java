@@ -96,4 +96,14 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
     abstract public JdbcTemplate getJdbcTemplate();
 
     public abstract Class getIdClass();
+
+    /**
+     * Gets all rows in a table
+     *
+     * @return list containing all objects in table
+     */
+    public List<E> getEverything() {
+        String sql = "SELECT * FROM " + getTableName();
+        return getJdbcTemplate().queryForList(sql, getEntityClass());
+    }
 }
