@@ -44,9 +44,22 @@ public class QuoteController {
     @ResponseBody
     public List<Quote> getDailyList() {
         try {
-            return quoteDao.getEverything();
+            List<Quote> list = quoteDao.getEverything();
+            return list;
         } catch (Exception e) {
             throw ResponseExceptionUtil.getResponseStatusException(e);
         }
     }
+
+    @PostMapping(path = "tickerId/{tickerId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void createQuote(String ticker) {
+        try {
+            quoteService.initQuote(ticker);
+        } catch (Exception e) {
+            throw ResponseExceptionUtil.getResponseStatusException(e);
+        }
+    }
+
 }
