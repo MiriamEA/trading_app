@@ -83,5 +83,4 @@ public class QuoteController {
             throw ResponseExceptionUtil.getResponseStatusException(e);
         }
     }
-
 }

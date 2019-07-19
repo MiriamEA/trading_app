@@ -25,9 +25,6 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         quoteService.initQuotes(Arrays.asList("FB", "MCD", "AAPL"));
-        System.out.println("Waiting");
-        //TimeUnit.MINUTES.sleep(1);
-        quoteService.updateMarketData();
         System.out.println("DONE");
     }
 }
