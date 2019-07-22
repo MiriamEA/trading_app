@@ -15,16 +15,11 @@ public class Account implements Entity<Integer> {
     @JsonProperty("amount")
     private Double amount;
 
-    public Account(int id, int traderId, double amount){
-        this.id = id;
+    public Account(int traderId) {
         this.traderId = traderId;
-        this.amount = amount;
     }
 
-    public Account(){
-        id = null;
-        traderId = null;
-        amount = 0.0;
+    public Account() {
     }
 
     @JsonProperty("id")
