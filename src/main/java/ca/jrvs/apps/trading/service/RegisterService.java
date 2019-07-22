@@ -36,7 +36,6 @@ public class RegisterService {
      *
      * @param trader trader info
      * @return traderAccountView for the new trader
-     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if ticker is not found from IEX
      * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
      * @throws IllegalArgumentException                           for invalid input
      */
@@ -71,13 +70,9 @@ public class RegisterService {
 
     /**
      * A trader can be deleted iff no open position and no cash balance.
-     * - validate traderID
-     * - get trader account by traderId and check account balance
-     * - get positions by accountId and check positions
-     * - delete all securityOrders, account, trader (in this order)
      *
      * @param traderId must not be {@literal null}
-     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if ticker is not found from IEX
+     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if data cannot be found in db
      * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
      * @throws IllegalArgumentException                           for invalid input
      */
