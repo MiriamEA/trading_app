@@ -17,6 +17,7 @@ public class Account implements Entity<Integer> {
 
     public Account(int traderId) {
         this.traderId = traderId;
+        amount = 0.0;
     }
 
     public Account() {
