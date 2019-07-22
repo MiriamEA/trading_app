@@ -6,10 +6,13 @@ import ca.jrvs.apps.trading.dao.PositionDao;
 import ca.jrvs.apps.trading.dao.SecurityOrderDao;
 import ca.jrvs.apps.trading.dao.TraderDao;
 import ca.jrvs.apps.trading.model.domain.Account;
+import ca.jrvs.apps.trading.model.domain.Position;
 import ca.jrvs.apps.trading.model.domain.Trader;
 import ca.jrvs.apps.trading.model.view.TraderAccountView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RegisterService {
@@ -30,13 +33,9 @@ public class RegisterService {
 
     /**
      * Create a new trader and initialize a new account with 0 amount.
-     * - validate user input (all fields must be non empty)
-     * - create a trader
-     * - create an account
-     * - create, setup, and return a new traderAccountView
      *
      * @param trader trader info
-     * @return traderAccountView
+     * @return traderAccountView for the new trader
      * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if ticker is not found from IEX
      * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
      * @throws IllegalArgumentException                           for invalid input
@@ -47,8 +46,7 @@ public class RegisterService {
             throw new IllegalArgumentException("All attributes of a trader must be set.");
         }
         trader = traderDao.save(trader);
-        Account account = new Account();
-        account.setTraderId(trader.getId());
+        Account account = new Account(trader.getId());
         account = accountDao.save(account);
         return new TraderAccountView(account, trader);
     }
@@ -57,9 +55,12 @@ public class RegisterService {
      * Checks whether all fields of a trader at not null
      *
      * @param trader trader to check
-     * @return true if all fields are not null, false otherwise
+     * @return true if the trader is not null and all fields (except id) are not null, false otherwise
      */
     private boolean validateTrader(Trader trader) {
+        if(trader == null){
+            return false;
+        }
         boolean firstNameIsSet = trader.getFirstName() != null;
         boolean lastNameIsSet = trader.getLastName() != null;
         boolean countryIsSet = trader.getCountry() != null;
@@ -81,7 +82,22 @@ public class RegisterService {
      * @throws IllegalArgumentException                           for invalid input
      */
     public void deleteTraderById(Integer traderId) {
+        if(traderId == null){
+            throw new IllegalArgumentException("TraderId cannot be null.");
+        }
+        Account account = accountDao.findByTraderId(traderId);
+        int accountId = account.getId();
+        if(account.getAmount() != 0){
+            throw new IllegalArgumentException("Trader " + traderId + " still has money and cannot be deleted.");
+        }
+        List<Position> positions = positionDao.findAllByAccountId(accountId);
+        if(!positions.isEmpty()){
+            throw new IllegalArgumentException("Trader " + traderId + " cannot be deleted because of open positions");
+        }
 
+        securityOrderDao.deleteByAccountId(accountId);
+        accountDao.deleteById(accountId);
+        traderDao.deleteById(traderId);
     }
 
 }
