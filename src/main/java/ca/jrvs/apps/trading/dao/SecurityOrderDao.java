@@ -49,4 +49,17 @@ public class SecurityOrderDao extends JdbcCrudDao<SecurityOrder, Integer> {
     public Class getEntityClass() {
         return SecurityOrder.class;
     }
+
+    /**
+     * Deletes all security orders for a given account
+     *
+     * @param accountId must not be null
+     */
+    public void deleteByAccountId(Integer accountId) {
+        if (accountId == null) {
+            throw new IllegalArgumentException("Account id cannot be null.");
+        }
+        String sql = "delete from " + TABLE_NAME + " where account_id =?";
+        jdbcTemplate.update(sql, accountId);
+    }
 }
