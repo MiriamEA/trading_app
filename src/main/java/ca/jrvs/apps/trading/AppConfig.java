@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ca.jrvs.apps.trading.util.StringUtil;
 
 import javax.sql.DataSource;
 
@@ -31,20 +32,47 @@ public class AppConfig {
         return new MarketDataConfig();
     }
 
+/*    @Value("${iex.host}")
+    private String iex_host;
+
+    @Bean
+    public MarketDataConfig marketDataConfig() {
+        if (StringUtil.isEmpty(System.getenv("IEX_PUB_TOKEN")) || StringUtil.isEmpty(iex_host)) {
+            throw new IllegalArgumentException("ENV:IEX_PUB_TOKEN or property:iex_host is not set");
+        }
+        MarketDataConfig marketDataConfig = new MarketDataConfig();
+        marketDataConfig.setToken(System.getenv("IEX_PUB_TOKEN"));
+        marketDataConfig.setHost(iex_host);
+        return marketDataConfig;
+    }*/
+
     @Bean
     public DataSource dataSource() {
-        String host = "localhost";
-        String jdbcUrl = "jdbc:postgresql://" + host + "/jrvstrading";
-        String user = "postgres"; //System.getenv("PSQL_USER");
-        String password = "password"; //System.getenv("PSQL_PASSWORD");
 
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl(jdbcUrl);
-        dataSource.setUsername(user);
-        dataSource.setPassword(password);
-        return dataSource;
+        String jdbcUrl;
+        String user;
+        String password;
+
+        jdbcUrl = "jdbc:postgresql://localhost/jrvstrading";
+        user = "postgres";
+        password = "password";
+
+        //jdbcUrl = System.getenv("PSQL_URL");
+        //user = System.getenv("PSQL_USER");
+        //password = System.getenv("PSQL_PASSWORD");
+
+        logger.error("JDBC:" + jdbcUrl);
+
+        if (StringUtil.isEmpty(jdbcUrl, user, password)) {
+            throw new IllegalArgumentException("Missing data source config env vars");
+        }
+
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setDriverClassName("org.postgresql.Driver");
+        basicDataSource.setUrl(jdbcUrl);
+        basicDataSource.setUsername(user);
+        basicDataSource.setPassword(password);
+        return basicDataSource;
     }
-
 
 }
