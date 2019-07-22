@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"accountId", "ticker", "position"})
-public class Position implements Entity<Integer> {
+public class Position {
 
     @JsonProperty("accountId")
     private Integer accountId;
@@ -35,11 +35,6 @@ public class Position implements Entity<Integer> {
         this.position = position;
     }
 
-    @Override
-    public Integer getId() {
-        return getAccountId();
-    }
-
     @JsonProperty("accountId")
     public Integer getAccountId() {
         return accountId;
@@ -48,10 +43,5 @@ public class Position implements Entity<Integer> {
     @JsonProperty("accountId")
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        setAccountId(id);
     }
 }
