@@ -33,7 +33,7 @@ public class FundTransferService {
         }
         Account account = accountDao.findByTraderId(traderId);
         account.setAmount(account.getAmount() + fund);
-        accountDao.updateAmountById(account.getAmount(), traderId);
+        accountDao.updateAmountById(account.getAmount(), account.getId());
         return account;
     }
 
@@ -57,7 +57,7 @@ public class FundTransferService {
             throw new IllegalArgumentException("Insufficient funds in account. Current amount is " + currentAmount);
         }
         account.setAmount(currentAmount - fund);
-        accountDao.updateAmountById(account.getAmount(), traderId);
+        accountDao.updateAmountById(account.getAmount(), account.getId());
         return account;
     }
 }

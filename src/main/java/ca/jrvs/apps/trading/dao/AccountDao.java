@@ -71,11 +71,11 @@ public class AccountDao extends JdbcCrudDao<Account, Integer> {
      * Updates account information in db
      *
      * @param amount   the new amount to save
-     * @param traderId id of account owner
+     * @param accountId id of account
      * @throws java.sql.SQLException if sql execution failed.
      */
-    public void updateAmountById(double amount, int traderId) {
-        String sql = "UPDATE " + TABLE_NAME + " SET amount =? where trader_id = " + traderId;
+    public void updateAmountById(double amount, int accountId) {
+        String sql = "UPDATE " + TABLE_NAME + " SET amount =? where id = " + accountId;
         jdbcTemplate.update(sql, amount);
     }
 }
