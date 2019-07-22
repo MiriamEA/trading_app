@@ -4,9 +4,11 @@ import ca.jrvs.apps.trading.model.domain.SecurityOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
+@Repository
 public class SecurityOrderDao extends JdbcCrudDao<SecurityOrder, Integer> {
 
     private final static String TABLE_NAME = "security_order";
