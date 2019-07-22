@@ -1,6 +1,7 @@
 package ca.jrvs.apps.trading.dao;
 
 import ca.jrvs.apps.trading.model.domain.Position;
+import ca.jrvs.apps.trading.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,10 +33,23 @@ public class PositionDao {
      * @throws org.springframework.dao.DataAccessException if account cannot be found in db
      */
     public List<Position> findAllByAccountId(Integer accountId) {
+        validateAccountId(accountId);
+        String sql = "select * from " + TABLE_NAME + " where account_id =?";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Position.class), accountId);
+    }
+
+    private void validateAccountId(Integer accountId) {
         if (accountId == null) {
             throw new IllegalArgumentException("Acount id cannot be null.");
         }
-        String sql = "select * from " + TABLE_NAME + " where account_id =?";
-        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Position.class), accountId);
+    }
+
+    public Position findByAccountIdAndTicker(Integer accountId, String ticker) {
+        validateAccountId(accountId);
+        if (StringUtil.isEmpty(ticker)) {
+            throw new IllegalArgumentException("Ticker cannot be empty.");
+        }
+        String sql = "select * from " + TABLE_NAME + " where account_id =? and ticker =?";
+        return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Position.class), accountId, ticker);
     }
 }
