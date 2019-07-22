@@ -92,11 +92,20 @@ public class OrderService {
         }
     }
 
+    /**
+     * Executes a buying order
+     *
+     * @param totalPrice    price for buying
+     * @param securityOrder order to execute
+     * @param account       account buying position
+     * @return security order updated with status
+     * @throws IllegalArgumentException if account has not enough money
+     */
     private SecurityOrder executeBuying(double totalPrice, SecurityOrder securityOrder, Account account) {
         if (totalPrice > account.getAmount()) {
             securityOrder.setStatus(OrderStatus.CANCELED);
             securityOrderDao.save(securityOrder);
-            throw new IllegalArgumentException("Insufficient fund. Reqired: " + totalPrice + ", availabel: " + account.getAmount());
+            throw new IllegalArgumentException("Insufficient fund. Reqired: " + totalPrice + ", available: " + account.getAmount());
         } else {
             securityOrder.setStatus(OrderStatus.FILLED);
             accountDao.updateAmountById(account.getAmount() - totalPrice, account.getId());
@@ -105,12 +114,20 @@ public class OrderService {
         return securityOrder;
     }
 
+    /**
+     * Executes a selling order.
+     * @param totalPrice price for selling
+     * @param securityOrder order to sell
+     * @param account account making the sell
+     * @return security order with updated status
+     * @throws IllegalArgumentException if account has not enough position
+     */
     private SecurityOrder executeSelling(double totalPrice, SecurityOrder securityOrder, Account account) {
         Position position = positionDao.findByAccountIdAndTicker(account.getId(), securityOrder.getTicker());
         if (position.getPosition() < abs(securityOrder.getSize())) {
             securityOrder.setStatus(OrderStatus.CANCELED);
             securityOrderDao.save(securityOrder);
-            throw new IllegalArgumentException("Not enough ");
+            throw new IllegalArgumentException("Not enough position, only " + position.getPosition() + "available.");
         } else {
             securityOrder.setStatus(OrderStatus.FILLED);
             accountDao.updateAmountById(account.getAmount() + totalPrice, account.getId());
