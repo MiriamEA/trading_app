@@ -1,4 +1,4 @@
-package ca.jrvs.apps.trading;
+package ca.jrvs.apps.trading.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
