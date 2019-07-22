@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.sql.Date;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"id", "firstName", "lastName", "dob", "country", "email"})
 public class Trader implements Entity<Integer> {
@@ -15,7 +17,7 @@ public class Trader implements Entity<Integer> {
     @JsonProperty("lastName")
     private String lastName;
     @JsonProperty("dob")
-    private String dob;
+    private Date dob;
     @JsonProperty("country")
     private String country;
     @JsonProperty("email")
@@ -54,12 +56,12 @@ public class Trader implements Entity<Integer> {
     }
 
     @JsonProperty("dob")
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
     @JsonProperty("dob")
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
