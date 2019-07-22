@@ -54,7 +54,7 @@ public class QuoteController {
     @PostMapping(path = "tickerId/{tickerId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void createQuote(String ticker) {
+    public void createQuote(@PathVariable String ticker) {
         try {
             quoteService.initQuote(ticker);
         } catch (Exception e) {
