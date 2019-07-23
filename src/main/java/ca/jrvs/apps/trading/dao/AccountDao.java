@@ -2,7 +2,6 @@ package ca.jrvs.apps.trading.dao;
 
 import ca.jrvs.apps.trading.model.domain.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -54,17 +53,27 @@ public class AccountDao extends JdbcCrudDao<Account, Integer> {
     }
 
     /**
+     * Retrieves an account by its id
+     *
+     * @param accountId id of account
+     * @return account with the given account id
+     * @throws java.sql.SQLException     if sql execution failed
+     * @throws ResourceNotFoundException if no entity is found in db
+     */
+    public Account findByAccountId(int accountId) {
+        return super.findById(ID_NAME, accountId, Account.class, true);
+    }
+
+    /**
      * Retrieves an account by its traderId.
      *
-     * @param traderId id must not be
+     * @param traderId id of trader
      * @return account associated with given trader id
      * @throws java.sql.SQLException     if sql execution failed.
      * @throws ResourceNotFoundException if no entity is found in db
      */
     public Account findByTraderId(int traderId) {
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE trader_id = ?";
-        Account account = jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Account.class), traderId);
-        return account;
+        return super.findById("trader_id", traderId, Account.class, false);
     }
 
     /**
