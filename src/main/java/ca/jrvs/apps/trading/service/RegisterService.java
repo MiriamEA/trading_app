@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RegisterService {
@@ -86,7 +87,8 @@ public class RegisterService {
             throw new IllegalArgumentException("Trader " + traderId + " still has money and cannot be deleted.");
         }
         List<Position> positions = positionDao.findAllByAccountId(accountId);
-        if(!positions.isEmpty()){
+        List<Position> openPositions = positions.stream().filter(p -> p.getPosition() > 0).collect(Collectors.toList());
+        if (!openPositions.isEmpty()) {
             throw new IllegalArgumentException("Trader " + traderId + " cannot be deleted because of open positions");
         }
 
