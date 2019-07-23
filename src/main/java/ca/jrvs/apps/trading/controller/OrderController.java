@@ -25,7 +25,7 @@ public class OrderController {
 
     @ApiOperation(value = "Submit a market order", notes = "Submit a market order")
     @PostMapping("/marketOrder")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public SecurityOrder executeMarketOrder(MarketOrderDto order) {
         try {

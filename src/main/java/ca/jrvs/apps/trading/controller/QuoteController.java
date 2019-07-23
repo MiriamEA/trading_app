@@ -56,7 +56,7 @@ public class QuoteController {
 
     @ApiOperation(value = "Add a new ticker to the daily list (quote table)", notes = "Add a new ticker to the quote table, so traders can trade this security.")
     @PostMapping(path = "tickerId/{tickerId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public void createQuote(@PathVariable String ticker) {
         try {
