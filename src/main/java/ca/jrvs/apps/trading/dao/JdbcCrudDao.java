@@ -37,8 +37,9 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null.");
         }
-        E entity = findById(id);
-        return entity != null;
+        String sql = "select count(*) from " + getTableName() + " where " + getIdName() + " =?";
+        int count = getJdbcTemplate().queryForObject(sql, Integer.class, id);
+        return count != 0;
     }
 
     @Override
