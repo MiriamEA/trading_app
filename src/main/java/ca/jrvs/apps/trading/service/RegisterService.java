@@ -40,6 +40,7 @@ public class RegisterService {
      * @throws IllegalArgumentException                    for invalid input
      */
     public TraderAccountView createTraderAndAccount(Trader trader) {
+        trader.trim();
         validateTrader(trader);
 
         trader = traderDao.save(trader);

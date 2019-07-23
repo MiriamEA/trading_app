@@ -78,16 +78,20 @@ public class OrderService {
     }
 
     /**
-     * Checks that an order has a nonzero size and a nonempty ticker
+     * Checks that an order is not null, has a nonzero size and a nonempty ticker
      *
      * @param order must not be null
      * @throws IllegalArgumentException if size is 0, or if ticker is empty
      */
     private void validateOrder(MarketOrderDto order) {
+        if (order == null) {
+            throw new IllegalArgumentException("Order cannot be null.");
+        }
         int orderSize = order.getSize();
         if (orderSize == 0) {
             throw new IllegalArgumentException("Order size cannot be 0.");
         }
+        order.setTicker(order.getTicker().trim());
         String ticker = order.getTicker();
         if (StringUtil.isEmpty(Collections.singletonList(ticker))) {
             throw new IllegalArgumentException("Ticker cannot be empty.");

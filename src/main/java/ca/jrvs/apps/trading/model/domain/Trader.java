@@ -84,4 +84,11 @@ public class Trader implements Entity<Integer> {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void trim() {
+        firstName = firstName.trim();
+        lastName = lastName.trim();
+        email = email.trim();
+        country = country.trim();
+    }
 }
