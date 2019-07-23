@@ -5,7 +5,6 @@ import ca.jrvs.apps.trading.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -17,12 +16,10 @@ public class PositionDao {
 
     private final static String TABLE_NAME = "position";
     private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
 
     @Autowired
     public PositionDao(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME);
     }
 
     /**
