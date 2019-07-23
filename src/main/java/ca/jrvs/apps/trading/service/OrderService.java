@@ -67,7 +67,7 @@ public class OrderService {
         securityOrder.setTicker(ticker);
         double price = quoteDao.findById(ticker).getAskPrice();
         securityOrder.setPrice(price);
-        Account account = accountDao.findById(accountId);
+        Account account = accountDao.findByAccountId(accountId);
         double totalPrice = price * abs(orderSize);
 
         if (orderSize > 0) {

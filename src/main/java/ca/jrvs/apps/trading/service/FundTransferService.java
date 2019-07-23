@@ -34,7 +34,7 @@ public class FundTransferService {
         if (fund <= 0) {
             throw new IllegalArgumentException("Invalid fund");
         }
-        Account account = accountDao.findById(id);
+        Account account = accountDao.findByAccountId(id);
         account.setAmount(account.getAmount() + fund);
         accountDao.updateAmountById(account.getAmount(), account.getId());
         return account;
@@ -54,7 +54,7 @@ public class FundTransferService {
         if (fund <= 0) {
             throw new IllegalArgumentException("Invalid fund");
         }
-        Account account = accountDao.findById(id);
+        Account account = accountDao.findByAccountId(id);
         double currentAmount = account.getAmount();
         if (fund > currentAmount) {
             throw new IllegalArgumentException("Insufficient funds in account. Current amount is " + currentAmount);
