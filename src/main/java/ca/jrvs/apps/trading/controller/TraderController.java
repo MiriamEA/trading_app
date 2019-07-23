@@ -56,7 +56,7 @@ public class TraderController {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public TraderAccountView createNewTrader(Trader trader) {
+    public TraderAccountView createNewTrader(@RequestBody Trader trader) {
         try {
             return registerService.createTraderAndAccount(trader);
         } catch (Exception e) {

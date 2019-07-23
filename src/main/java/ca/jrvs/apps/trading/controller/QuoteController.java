@@ -70,7 +70,7 @@ public class QuoteController {
     @PutMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void updateQuote(Quote quote) {
+    public void updateQuote(@RequestBody Quote quote) {
         try {
             quoteDao.updateQuote(quote);
         } catch (Exception e) {
