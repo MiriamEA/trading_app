@@ -103,8 +103,14 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
      * @return list containing all objects in table
      */
     public List<E> getEverything() {
-        String sql = "SELECT * FROM " + getTableName();
+        String sql = "select * from " + getTableName();
         List<E> list = getJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(getEntityClass()));
         return list;
+    }
+
+    public void updateNumberColumnById(Number value, String columnName, ID id) {
+        String sql = "UPDATE " + getTableName() + " SET " + columnName + " =? where " + getIdName() + " = ?";
+        logger.info(sql + ", " + columnName + ", " + id);
+        getJdbcTemplate().update(sql, value, id);
     }
 }
