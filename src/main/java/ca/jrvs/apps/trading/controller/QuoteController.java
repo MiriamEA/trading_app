@@ -5,6 +5,7 @@ import ca.jrvs.apps.trading.dao.QuoteDao;
 import ca.jrvs.apps.trading.model.domain.IexQuote;
 import ca.jrvs.apps.trading.model.domain.Quote;
 import ca.jrvs.apps.trading.service.QuoteService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ public class QuoteController {
         this.quoteService = quoteService;
     }
 
+    @ApiOperation(value = "Show iexQuote", notes = "Show iexQuote for a given ticker")
     @GetMapping(path = "/iex/ticker/{ticker}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -39,6 +41,7 @@ public class QuoteController {
         }
     }
 
+    @ApiOperation(value = "Show the daily list", notes = "Show daily list for this trading system. (daily list = quote table)")
     @GetMapping(path = "dailyList")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -51,6 +54,7 @@ public class QuoteController {
         }
     }
 
+    @ApiOperation(value = "Add a new ticker to the daily list (quote table)", notes = "Add a new ticker to the quote table, so traders can trade this security.")
     @PostMapping(path = "tickerId/{tickerId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -62,6 +66,7 @@ public class QuoteController {
         }
     }
 
+    @ApiOperation(value = "Update a quote in the quote table", notes = "Manually update a quote in the quote table.")
     @PutMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -73,6 +78,7 @@ public class QuoteController {
         }
     }
 
+    @ApiOperation(value = "Update all quotes in the quote table", notes = "Manually update all quotes in the quote table using IEX market data.")
     @PutMapping(path = "/IexMarketData")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
