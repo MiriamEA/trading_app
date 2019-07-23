@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+
 import static java.lang.Math.abs;
 
 @Service
@@ -87,7 +89,7 @@ public class OrderService {
             throw new IllegalArgumentException("Order size cannot be 0.");
         }
         String ticker = order.getTicker();
-        if (StringUtil.isEmpty(ticker)) {
+        if (StringUtil.isEmpty(Collections.singletonList(ticker))) {
             throw new IllegalArgumentException("Ticker cannot be empty.");
         }
     }
@@ -127,7 +129,7 @@ public class OrderService {
         if (position.getPosition() < abs(securityOrder.getSize())) {
             securityOrder.setStatus(OrderStatus.CANCELED);
             securityOrderDao.save(securityOrder);
-            throw new IllegalArgumentException("Not enough position, only " + position.getPosition() + "available.");
+            throw new IllegalArgumentException("Not enough position, only " + position.getPosition() + " available.");
         } else {
             securityOrder.setStatus(OrderStatus.FILLED);
             accountDao.updateAmountById(account.getAmount() + totalPrice, account.getId());

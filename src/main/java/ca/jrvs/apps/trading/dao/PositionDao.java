@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -46,7 +47,7 @@ public class PositionDao {
 
     public Position findByAccountIdAndTicker(Integer accountId, String ticker) {
         validateAccountId(accountId);
-        if (StringUtil.isEmpty(ticker)) {
+        if (StringUtil.isEmpty(Collections.singletonList(ticker))) {
             throw new IllegalArgumentException("Ticker cannot be empty.");
         }
         String sql = "select * from " + TABLE_NAME + " where account_id =? and ticker =?";
