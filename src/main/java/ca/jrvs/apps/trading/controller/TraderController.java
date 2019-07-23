@@ -66,7 +66,6 @@ public class TraderController {
     public Account depositeByAccountId(Integer accountId, Double amount) {
         try {
             return fundTransferService.deposit(accountId, amount);
-            //TODO change fundTransferService to deposite by account id
         } catch (Exception e) {
             throw ResponseExceptionUtil.getResponseStatusException(e);
         }
@@ -78,7 +77,6 @@ public class TraderController {
     public Account withdrawByAccountId(Integer accountId, Double amount) {
         try {
             return fundTransferService.withdraw(accountId, amount);
-            //TODO change fundTransferService to deposite by account id
         } catch (Exception e) {
             throw ResponseExceptionUtil.getResponseStatusException(e);
         }

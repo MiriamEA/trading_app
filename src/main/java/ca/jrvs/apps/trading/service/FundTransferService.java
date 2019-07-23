@@ -18,40 +18,43 @@ public class FundTransferService {
     }
 
     /**
-     * Deposit a fund to the account which is associated with the traderId
+     * Deposit a fund to the account which is associated with the id
      *
-     * @param traderId trader id
+     * @param id must not be null
      * @param fund     found amount (can't be 0)
      * @return updated Account object
-     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if traderId is not found in db
+     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if id is not found in db
      * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
      * @throws IllegalArgumentException                           for invalid input
      */
-    public Account deposit(Integer traderId, Double fund) {
+    public Account deposit(Integer id, Double fund) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null.");
+        }
         if (fund <= 0) {
             throw new IllegalArgumentException("Invalid fund");
         }
-        Account account = accountDao.findByTraderId(traderId);
+        Account account = accountDao.findById(id);
         account.setAmount(account.getAmount() + fund);
         accountDao.updateAmountById(account.getAmount(), account.getId());
         return account;
     }
 
     /**
-     * Withdraw a fund from the account which is associated with the traderId
+     * Withdraw a fund from the account which is associated with the id
      *
-     * @param traderId trader ID
+     * @param id must not be null
      * @param fund     amount can't be 0
      * @return updated Account object
-     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if traderId is not found in db
+     * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if id is not found in db
      * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
      * @throws IllegalArgumentException                           for invalid input
      */
-    public Account withdraw(Integer traderId, Double fund) {
+    public Account withdraw(Integer id, Double fund) {
         if (fund <= 0) {
             throw new IllegalArgumentException("Invalid fund");
         }
-        Account account = accountDao.findByTraderId(traderId);
+        Account account = accountDao.findById(id);
         double currentAmount = account.getAmount();
         if (fund > currentAmount) {
             throw new IllegalArgumentException("Insufficient funds in account. Current amount is " + currentAmount);
