@@ -1,6 +1,7 @@
 package ca.jrvs.apps.trading;
 
 import ca.jrvs.apps.trading.model.config.MarketDataConfig;
+import ca.jrvs.apps.trading.util.StringUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -9,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ca.jrvs.apps.trading.util.StringUtil;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Configuration
 @EnableTransactionManagement
@@ -63,7 +64,7 @@ public class AppConfig {
 
         logger.error("JDBC:" + jdbcUrl);
 
-        if (StringUtil.isEmpty(jdbcUrl, user, password)) {
+        if (StringUtil.isEmpty(Arrays.asList(jdbcUrl, user, password))) {
             throw new IllegalArgumentException("Missing data source config env vars");
         }
 
