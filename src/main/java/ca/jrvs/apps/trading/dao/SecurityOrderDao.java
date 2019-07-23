@@ -61,7 +61,11 @@ public class SecurityOrderDao extends JdbcCrudDao<SecurityOrder, Integer> {
         if (accountId == null) {
             throw new IllegalArgumentException("Account id cannot be null.");
         }
-        String sql = "delete from " + TABLE_NAME + " where account_id =?";
-        jdbcTemplate.update(sql, accountId);
+
+        super.deleteById("account_id", accountId);
+
+        //   String sql = "delete from " + TABLE_NAME + " where account_id =?";
+        //   jdbcTemplate.update(sql, accountId);
+
     }
 }

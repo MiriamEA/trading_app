@@ -90,7 +90,21 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null.");
         }
-        getJdbcTemplate().update("delete from " + getTableName() + " where " + getIdName() + " = ?", id);
+        deleteById(getIdName(), id);
+    }
+
+    /**
+     * Deletes an entity with the given id in column idName
+     *
+     * @param idName name of id colum
+     * @param id     ust not be null
+     */
+    public void deleteById(String idName, ID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null.");
+        }
+        String sql = "delete from " + getTableName() + " where " + idName + " =?";
+        getJdbcTemplate().update(sql, id);
     }
 
     abstract public JdbcTemplate getJdbcTemplate();
@@ -108,6 +122,13 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         return list;
     }
 
+    /**
+     * Updates a column with a number value by id
+     * @param value new value to set
+     * @param columnName column to update
+     * @param id id of row to update
+     * @throws java.sql.SQLException if sql execution fails
+     */
     public void updateNumberColumnById(Number value, String columnName, ID id) {
         String sql = "UPDATE " + getTableName() + " SET " + columnName + " =? where " + getIdName() + " = ?";
         logger.info(sql + ", " + columnName + ", " + id);
