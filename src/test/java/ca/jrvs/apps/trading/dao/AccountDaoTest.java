@@ -5,8 +5,13 @@ import ca.jrvs.apps.trading.model.domain.Trader;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.support.EncodedResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,6 +31,12 @@ public class AccountDaoTest {
         dataSource.setUrl(jdbcUrl);
         dataSource.setUsername(user);
         dataSource.setPassword(password);
+
+        try (Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(connection, new EncodedResource(new FileSystemResource("/home/centos/dev/jrvs/bootcamp/trading_app/sql_ddl/schema.sql")));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         TraderDao traderDao = new TraderDao(dataSource);
         Trader trader = new Trader();

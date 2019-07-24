@@ -7,7 +7,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.support.EncodedResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -33,12 +38,11 @@ public class QuoteDaoTest {
         dataSource.setUrl(jdbcUrl);
         dataSource.setUsername(user);
         dataSource.setPassword(password);
-//        try (Connection connection = dataSource.getConnection()){
-//            ScriptUtils.executeSqlScript(connection,
-//                    new EncodedResource(new ClassPathResource("/home/centos/dev/jrvs/bootcamp/trading_app/sql_ddl/schema.sql")));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        try (Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(connection, new EncodedResource(new FileSystemResource("/home/centos/dev/jrvs/bootcamp/trading_app/sql_ddl/schema.sql")));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         quoteDao = new QuoteDao(dataSource);
     }
