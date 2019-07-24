@@ -1,8 +1,8 @@
 package ca.jrvs.apps.trading.dao;
 
-import ca.jrvs.apps.trading.util.JsonUtil;
 import ca.jrvs.apps.trading.model.config.MarketDataConfig;
 import ca.jrvs.apps.trading.model.domain.IexQuote;
+import ca.jrvs.apps.trading.util.JsonUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -102,8 +102,6 @@ public class MarketDataDao {
     }
 
     private CloseableHttpClient getHttpClient() {
-        return HttpClients.custom().setConnectionManager(connectionManager)
-                //prevent connectionManager shutdown when calling httpClient.close()
-                .setConnectionManagerShared(true).build();
+        return HttpClients.custom().setConnectionManager(connectionManager).setConnectionManagerShared(true).build();
     }
 }

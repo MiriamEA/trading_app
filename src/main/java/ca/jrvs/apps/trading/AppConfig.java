@@ -19,6 +19,8 @@ import java.util.Arrays;
 public class AppConfig {
 
     private Logger logger = LoggerFactory.getLogger(AppConfig.class);
+/*    @Value("${iex.host}")
+    private String iex_host;*/
 
     @Bean
     public HttpClientConnectionManager httpClientConnectionManager() {
@@ -32,13 +34,10 @@ public class AppConfig {
     public MarketDataConfig marketDataConfig() {
         return new MarketDataConfig();
     }
-
-/*    @Value("${iex.host}")
-    private String iex_host;
-
+/*
     @Bean
     public MarketDataConfig marketDataConfig() {
-        if (StringUtil.isEmpty(System.getenv("IEX_PUB_TOKEN")) || StringUtil.isEmpty(iex_host)) {
+        if (StringUtil.isEmpty(Arrays.asList(System.getenv("IEX_PUB_TOKEN"), iex_host))) {
             throw new IllegalArgumentException("ENV:IEX_PUB_TOKEN or property:iex_host is not set");
         }
         MarketDataConfig marketDataConfig = new MarketDataConfig();
@@ -50,17 +49,9 @@ public class AppConfig {
     @Bean
     public DataSource dataSource() {
 
-        String jdbcUrl;
-        String user;
-        String password;
-
-        jdbcUrl = "jdbc:postgresql://localhost/jrvstrading";
-        user = "postgres";
-        password = "password";
-
-        //jdbcUrl = System.getenv("PSQL_URL");
-        //user = System.getenv("PSQL_USER");
-        //password = System.getenv("PSQL_PASSWORD");
+        String jdbcUrl = System.getenv("PSQL_URL");
+        String user = System.getenv("PSQL_USER");
+        String password = System.getenv("PSQL_PASSWORD");
 
         logger.error("JDBC:" + jdbcUrl);
 
@@ -75,5 +66,4 @@ public class AppConfig {
         basicDataSource.setPassword(password);
         return basicDataSource;
     }
-
 }
