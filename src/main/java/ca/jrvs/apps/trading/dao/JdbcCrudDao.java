@@ -137,7 +137,7 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
      */
     public void updateNumberColumnById(Number value, String columnName, ID id) {
         String sql = "UPDATE " + getTableName() + " SET " + columnName + " =? where " + getIdName() + " = ?";
-        logger.info(sql + ", " + id);
+        logger.debug(sql + ", " + value + ", " + id);
         getJdbcTemplate().update(sql, value, id);
     }
 }
