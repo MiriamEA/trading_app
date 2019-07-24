@@ -4,10 +4,7 @@ import ca.jrvs.apps.trading.dao.AccountDao;
 import ca.jrvs.apps.trading.dao.PositionDao;
 import ca.jrvs.apps.trading.dao.QuoteDao;
 import ca.jrvs.apps.trading.dao.SecurityOrderDao;
-import ca.jrvs.apps.trading.model.domain.Account;
-import ca.jrvs.apps.trading.model.domain.OrderStatus;
-import ca.jrvs.apps.trading.model.domain.Quote;
-import ca.jrvs.apps.trading.model.domain.SecurityOrder;
+import ca.jrvs.apps.trading.model.domain.*;
 import ca.jrvs.apps.trading.model.dto.MarketOrderDto;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +37,7 @@ public class OrderServiceTest {
 
     @Mock
     private PositionDao positionDao;
+    private Position mockPosition;
 
     @Before
     public void setup() {
@@ -51,6 +49,11 @@ public class OrderServiceTest {
         mockQuote = new Quote();
         mockQuote.setTicker("AAPL");
         mockQuote.setAskPrice(8.0);
+
+        mockPosition = new Position();
+        mockPosition.setAccountId(10);
+        mockPosition.setPosition(5);
+        mockPosition.setTicker("AAPL");
     }
 
     @Test
@@ -74,5 +77,29 @@ public class OrderServiceTest {
             fail();
         } catch (Exception e) {
         }
+    }
+
+    @Test
+    public void executeMarketOrderSelling() {
+        MarketOrderDto order = new MarketOrderDto();
+        order.setSize(-10);
+        order.setAccountId(10);
+        order.setTicker("AAPL");
+        when(accountDao.findByAccountId(10)).thenReturn(mockAccount);
+        when(quoteDao.findById(any())).thenReturn(mockQuote);
+        when(positionDao.findByAccountIdAndTicker(10, "AAPL")).thenReturn(mockPosition);
+
+        try {
+            SecurityOrder securityOrder = orderService.executeMarketOrder(order);
+            fail();
+        } catch (Exception e) {
+        }
+
+        order.setSize(-1);
+        SecurityOrder securityOrder = orderService.executeMarketOrder(order);
+        assertEquals(-1, securityOrder.getSize(), 0);
+        assertEquals("AAPL", securityOrder.getTicker());
+        assertEquals(OrderStatus.FILLED, securityOrder.getStatus());
+        assertEquals(10, securityOrder.getAccountId(), 0);
     }
 }
