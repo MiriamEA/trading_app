@@ -2,6 +2,8 @@ package ca.jrvs.apps.trading.dao;
 
 import ca.jrvs.apps.trading.model.domain.Position;
 import ca.jrvs.apps.trading.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +17,7 @@ import java.util.List;
 public class PositionDao {
 
     private final static String TABLE_NAME = "position";
+    private final Logger logger = LoggerFactory.getLogger(PositionDao.class);
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -33,6 +36,7 @@ public class PositionDao {
     public List<Position> findAllByAccountId(Integer accountId) {
         validateAccountId(accountId);
         String sql = "select * from " + TABLE_NAME + " where account_id =?";
+        logger.debug(sql + ", " + accountId);
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Position.class), accountId);
     }
 
@@ -48,6 +52,7 @@ public class PositionDao {
             throw new IllegalArgumentException("Ticker cannot be empty.");
         }
         String sql = "select * from " + TABLE_NAME + " where account_id =? and ticker =?";
+        logger.debug(sql + ", " + accountId + ", " + ticker);
         return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Position.class), accountId, ticker);
     }
 }

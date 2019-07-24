@@ -22,7 +22,7 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         SimpleJdbcInsert simpleJdbcInsert = getSimpleJdbcInsert();
         if (simpleJdbcInsert.getGeneratedKeyNames().length == 1) {
             ID newId = (ID) simpleJdbcInsert.executeAndReturnKey(parameterSource);
-            logger.info("New id: " + newId);
+            logger.debug("New id: " + newId);
             entity.setId(newId);
         } else {
             simpleJdbcInsert.execute(parameterSource);
@@ -38,9 +38,16 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
             throw new IllegalArgumentException("ID cannot be null.");
         }
         String sql = "select count(*) from " + getTableName() + " where " + getIdName() + " =?";
+        logger.debug(sql + ", " + id);
         int count = getJdbcTemplate().queryForObject(sql, Integer.class, id);
         return count != 0;
     }
+
+    abstract public String getTableName();
+
+    abstract public String getIdName();
+
+    abstract public JdbcTemplate getJdbcTemplate();
 
     @Override
     public E findById(ID id) {
@@ -52,8 +59,6 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         return findById(idName, id, clazz, true);
     }
 
-    abstract public String getIdName();
-
     abstract public Class getEntityClass();
 
     //Helper method
@@ -64,6 +69,7 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
             if (forUpdate) {
                 sql = sql + " for update";
             }
+            logger.debug(sql + ", " + id);
             entity = (E) getJdbcTemplate().queryForObject(sql, BeanPropertyRowMapper.newInstance(clazz), id);
         } catch (EmptyResultDataAccessException e) {
             logger.debug("Cannot find " + clazz + " id: " + id, e);
@@ -74,8 +80,6 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         return entity;
     }
 
-    abstract public String getTableName();
-
     /**
      * Gets all values from the id column
      *
@@ -85,6 +89,8 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         List<ID> allIds = getJdbcTemplate().queryForList("select " + getIdName() + " from " + getTableName(), getIdClass());
         return allIds;
     }
+
+    public abstract Class getIdClass();
 
     @Override
     public void deleteById(ID id) {
@@ -105,12 +111,9 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
             throw new IllegalArgumentException("ID cannot be null.");
         }
         String sql = "delete from " + getTableName() + " where " + idName + " =?";
+        logger.debug(sql + ", " + id);
         getJdbcTemplate().update(sql, id);
     }
-
-    abstract public JdbcTemplate getJdbcTemplate();
-
-    public abstract Class getIdClass();
 
     /**
      * Gets all rows in a table
@@ -119,20 +122,22 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
      */
     public List<E> getEverything() {
         String sql = "select * from " + getTableName();
+        logger.debug(sql);
         List<E> list = getJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(getEntityClass()));
         return list;
     }
 
     /**
      * Updates a column with a number value by id
-     * @param value new value to set
+     *
+     * @param value      new value to set
      * @param columnName column to update
-     * @param id id of row to update
+     * @param id         id of row to update
      * @throws java.sql.SQLException if sql execution fails
      */
     public void updateNumberColumnById(Number value, String columnName, ID id) {
         String sql = "UPDATE " + getTableName() + " SET " + columnName + " =? where " + getIdName() + " = ?";
-        logger.info(sql + ", " + columnName + ", " + id);
+        logger.info(sql + ", " + id);
         getJdbcTemplate().update(sql, value, id);
     }
 }
