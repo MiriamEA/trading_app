@@ -50,7 +50,6 @@ public class AccountDaoIntTest {
         trader.setEmail("johndoe@gmail.com");
         traderDao.save(trader);
 
-        //accountDao = new AccountDao(dataSource);
         Account account = new Account();
         account.setTraderId(1);
         account.setId(1);

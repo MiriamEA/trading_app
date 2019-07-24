@@ -122,9 +122,10 @@ public class OrderService {
 
     /**
      * Executes a selling order.
-     * @param totalPrice price for selling
+     *
+     * @param totalPrice    price for selling
      * @param securityOrder order to sell
-     * @param account account making the sell
+     * @param account       account making the sell
      * @return security order with updated status
      * @throws IllegalArgumentException if account has not enough position
      */
