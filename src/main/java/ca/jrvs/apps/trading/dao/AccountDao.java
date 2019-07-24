@@ -84,7 +84,6 @@ public class AccountDao extends JdbcCrudDao<Account, Integer> {
      * @throws java.sql.SQLException if sql execution failed.
      */
     public void updateAmountById(double amount, int accountId) {
-        String sql = "UPDATE " + TABLE_NAME + " SET amount =? where id = " + accountId;
-        jdbcTemplate.update(sql, amount);
+        super.updateNumberColumnById(amount, "amount", accountId);
     }
 }
