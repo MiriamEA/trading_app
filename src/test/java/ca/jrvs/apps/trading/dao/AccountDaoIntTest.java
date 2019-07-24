@@ -1,14 +1,19 @@
 package ca.jrvs.apps.trading.dao;
 
+import ca.jrvs.apps.trading.TestConfig;
 import ca.jrvs.apps.trading.model.domain.Account;
 import ca.jrvs.apps.trading.model.domain.Trader;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -16,29 +21,27 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class AccountDaoTest {
+@RunWith(SpringRunner.class)
+@Import(TestConfig.class)
+public class AccountDaoIntTest {
 
+    @Autowired
     private AccountDao accountDao;
+
+    @Autowired
+    private TraderDao traderDao;
+
+    @Autowired
+    private DataSource dataSource;
 
     @Before
     public void setup() {
-        String jdbcUrl = "jdbc:postgresql://localhost/jrvstrading_test";
-        String user = "postgres";
-        String password = "password";
-
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl(jdbcUrl);
-        dataSource.setUsername(user);
-        dataSource.setPassword(password);
-
         try (Connection connection = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(connection, new EncodedResource(new FileSystemResource("/home/centos/dev/jrvs/bootcamp/trading_app/sql_ddl/schema.sql")));
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        TraderDao traderDao = new TraderDao(dataSource);
         Trader trader = new Trader();
         trader.setDob(new Date(2000, 1, 1));
         trader.setLastName("Doe");
@@ -47,7 +50,7 @@ public class AccountDaoTest {
         trader.setEmail("johndoe@gmail.com");
         traderDao.save(trader);
 
-        accountDao = new AccountDao(dataSource);
+        //accountDao = new AccountDao(dataSource);
         Account account = new Account();
         account.setTraderId(1);
         account.setId(1);

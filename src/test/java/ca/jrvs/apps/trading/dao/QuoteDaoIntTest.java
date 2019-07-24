@@ -1,54 +1,48 @@
 package ca.jrvs.apps.trading.dao;
 
+import ca.jrvs.apps.trading.TestConfig;
 import ca.jrvs.apps.trading.model.domain.Quote;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class QuoteDaoTest {
-
-    private static BasicDataSource dataSource;
+@RunWith(SpringRunner.class)
+@Import(TestConfig.class)
+public class QuoteDaoIntTest {
 
     @Autowired
-    private static QuoteDao quoteDao;
+    private QuoteDao quoteDao;
+
+    @Autowired
+    private DataSource dataSource;
 
     private Quote quote;
     private Quote quote1;
 
-    @BeforeClass
-    public static void setupClass() {
-        String jdbcUrl = "jdbc:postgresql://localhost/jrvstrading_test";
-        String user = "postgres";
-        String password = "password";
 
-        dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl(jdbcUrl);
-        dataSource.setUsername(user);
-        dataSource.setPassword(password);
+    @Before
+    public void setup() {
+
         try (Connection connection = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(connection, new EncodedResource(new FileSystemResource("/home/centos/dev/jrvs/bootcamp/trading_app/sql_ddl/schema.sql")));
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        quoteDao = new QuoteDao(dataSource);
-    }
-
-    @Before
-    public void setup() {
         quote = new Quote();
         quote.setTicker("AAPL");
         quote.setLastPrice(34.234);
