@@ -87,11 +87,8 @@ public class QuoteDaoTest {
         boolean exists = quoteDao.existsById(quote.getTicker());
         assertTrue(exists);
         quoteDao.deleteById(quote.getTicker());
-        try {
-            boolean exist = quoteDao.existsById(quote.getTicker());
-            fail();
-        } catch (ResourceNotFoundException e) {
-        }
+        boolean exist = quoteDao.existsById(quote.getTicker());
+        assertFalse(exist);
     }
 
     @Test
