@@ -20,8 +20,8 @@ public class FundTransferService {
     /**
      * Deposit a fund to the account which is associated with the id
      *
-     * @param id must not be null
-     * @param fund     found amount (can't be 0)
+     * @param id   must not be null
+     * @param fund found amount (can't be 0)
      * @return updated Account object
      * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if id is not found in db
      * @throws org.springframework.dao.DataAccessException        if unable to retrieve data
@@ -43,8 +43,8 @@ public class FundTransferService {
     /**
      * Withdraw a fund from the account which is associated with the id
      *
-     * @param id must not be null
-     * @param fund     amount can't be 0
+     * @param id   must not be null
+     * @param fund amount can't be 0
      * @return updated Account object
      * @throws ca.jrvs.apps.trading.dao.ResourceNotFoundException if id is not found in db
      * @throws org.springframework.dao.DataAccessException        if unable to retrieve data

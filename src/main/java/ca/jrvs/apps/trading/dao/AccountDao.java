@@ -79,7 +79,7 @@ public class AccountDao extends JdbcCrudDao<Account, Integer> {
     /**
      * Updates account information in db
      *
-     * @param amount   the new amount to save
+     * @param amount    the new amount to save
      * @param accountId id of account
      * @throws java.sql.SQLException if sql execution failed.
      */

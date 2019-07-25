@@ -33,7 +33,6 @@ public class QuoteDaoIntTest {
     private Quote quote;
     private Quote quote1;
 
-
     @Before
     public void setup() {
 

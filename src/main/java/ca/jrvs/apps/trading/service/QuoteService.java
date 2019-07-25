@@ -38,7 +38,8 @@ public class QuoteService {
 
     /**
      * Parses a string to a double. If the string is null the defaultValue will be returned.
-     * @param s String to parse
+     *
+     * @param s            String to parse
      * @param defaultValue default value in case the String is null
      * @return double from string or default value
      */

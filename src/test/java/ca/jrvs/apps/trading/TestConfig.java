@@ -49,5 +49,4 @@ public class TestConfig {
         marketDataConfig.setHost(iex_host);
         return marketDataConfig;
     }
-
 }
