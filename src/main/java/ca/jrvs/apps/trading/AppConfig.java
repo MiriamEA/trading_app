@@ -7,6 +7,7 @@ import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -19,8 +20,8 @@ import java.util.Arrays;
 public class AppConfig {
 
     private Logger logger = LoggerFactory.getLogger(AppConfig.class);
-/*    @Value("${iex.host}")
-    private String iex_host;*/
+    @Value("${iex.host}")
+    private String iex_host = "https://cloud.iexapis.com/stable/";
 
     @Bean
     public HttpClientConnectionManager httpClientConnectionManager() {
@@ -30,11 +31,7 @@ public class AppConfig {
         return manager;
     }
 
-    @Bean
-    public MarketDataConfig marketDataConfig() {
-        return new MarketDataConfig();
-    }
-/*
+
     @Bean
     public MarketDataConfig marketDataConfig() {
         if (StringUtil.isEmpty(Arrays.asList(System.getenv("IEX_PUB_TOKEN"), iex_host))) {
@@ -44,7 +41,7 @@ public class AppConfig {
         marketDataConfig.setToken(System.getenv("IEX_PUB_TOKEN"));
         marketDataConfig.setHost(iex_host);
         return marketDataConfig;
-    }*/
+    }
 
     @Bean
     public DataSource dataSource() {

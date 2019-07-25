@@ -11,8 +11,6 @@ public class MarketDataConfig {
     }
 
     public MarketDataConfig() {
-        token = System.getenv("IEX_TOKEN");
-        host = "https://cloud.iexapis.com/stable/";
     }
 
     public String getHost() {
