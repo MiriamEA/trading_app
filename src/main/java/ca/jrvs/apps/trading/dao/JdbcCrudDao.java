@@ -126,18 +126,4 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         List<E> list = getJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(getEntityClass()));
         return list;
     }
-
-    /**
-     * Updates a column with a number value by id
-     *
-     * @param value      new value to set
-     * @param columnName column to update
-     * @param id         id of row to update
-     * @throws java.sql.SQLException if sql execution fails
-     */
-    public void updateNumberColumnById(Number value, String columnName, ID id) {
-        String sql = "UPDATE " + getTableName() + " SET " + columnName + " =? where " + getIdName() + " = ?";
-        logger.debug(sql + ", " + value + ", " + id);
-        getJdbcTemplate().update(sql, value, id);
-    }
 }

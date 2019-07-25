@@ -59,11 +59,8 @@ public class QuoteDao extends JdbcCrudDao<Quote, String> {
      */
     public void updateQuote(Quote quote) {
         String ticker = quote.getTicker();
-        super.updateNumberColumnById(quote.getBidSize(), "bid_size", ticker);
-        super.updateNumberColumnById(quote.getLastPrice(), "last_price", ticker);
-        super.updateNumberColumnById(quote.getBidPrice(), "bid_price", ticker);
-        super.updateNumberColumnById(quote.getAskSize(), "ask_size", ticker);
-        super.updateNumberColumnById(quote.getAskPrice(), "ask_price", ticker);
+        String sql = "UPDATE " + TABLE_NAME + " SET bid_size = ?, last_price = ?, bid_price = ?, ask_size = ?, " + "ask_price = ? where " + ID_NAME + " = ?";
+        logger.debug(sql + ", " + quote.getBidSize() + ", " + quote.getLastPrice() + ", " + quote.getBidPrice() + ", " + quote.getAskSize() + ", " + quote.getAskPrice() + ", " + ticker);
+        jdbcTemplate.update(sql, quote.getBidSize(), quote.getLastPrice(), quote.getBidPrice(), quote.getAskSize(), quote.getAskPrice(), ticker);
     }
-
 }
