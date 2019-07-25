@@ -1,10 +1,12 @@
 package ca.jrvs.apps.trading.dao;
 
-import ca.jrvs.apps.trading.model.config.MarketDataConfig;
+import ca.jrvs.apps.trading.TestConfig;
 import ca.jrvs.apps.trading.model.domain.IexQuote;
-import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,14 +14,12 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@Import(TestConfig.class)
 public class MarketDataDaoIntTest {
 
+    @Autowired
     private MarketDataDao marketDataDao;
-
-    @Before
-    public void setup() {
-        marketDataDao = new MarketDataDao(new BasicHttpClientConnectionManager(), new MarketDataConfig());
-    }
 
     @Test
     public void findIexQuoteByTicker() {

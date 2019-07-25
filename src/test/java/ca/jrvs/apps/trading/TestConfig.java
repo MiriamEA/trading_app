@@ -1,6 +1,7 @@
 package ca.jrvs.apps.trading;
 
 import ca.jrvs.apps.trading.model.config.MarketDataConfig;
+import ca.jrvs.apps.trading.util.StringUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Configuration
 @ComponentScan(basePackages = {"ca.jrvs.apps.trading.dao", "ca.jrvs.apps.trading.service"})
@@ -38,6 +40,14 @@ public class TestConfig {
 
     @Bean
     public MarketDataConfig marketDataConfig() {
-        return new MarketDataConfig();
+        String iex_host = "https://cloud.iexapis.com/stable/";
+        if (StringUtil.isEmpty(Arrays.asList(System.getenv("IEX_PUB_TOKEN")))) {
+            throw new IllegalArgumentException("ENV:IEX_PUB_TOKEN or property:iex_host is not set");
+        }
+        MarketDataConfig marketDataConfig = new MarketDataConfig();
+        marketDataConfig.setToken(System.getenv("IEX_PUB_TOKEN"));
+        marketDataConfig.setHost(iex_host);
+        return marketDataConfig;
     }
+
 }
