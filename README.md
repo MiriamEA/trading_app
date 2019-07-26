@@ -69,11 +69,9 @@ Endpoins in this controller:
 
 # Architecture
 
-![Architecture](https://github.com/MiriamEA/trading_app/blob/master/TradingApp.svg)
+![Architecture](https://github.com/MiriamEA/trading_app/blob/master/assets/TradingApp.svg)
 
 
-- Draw a component diagram which contains controller, service, DAO, storage layers (you can mimic the diagram from 
-the guide)
 - briefly explain the following logic layers or components (3-5 sentences for each)
   - Controller 
   - Service
