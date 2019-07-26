@@ -41,14 +41,6 @@ public class OrderService {
 
     /**
      * Execute a market order
-     * - validate the order (e.g. size, and ticker)
-     * - Create a securityOrder (for security_order table)
-     * - Handle buy or sell order
-     * - buy order : check account balance
-     * - sell order: check position for the ticker/symbol
-     * - (please don't forget to update securityOrder.status)
-     * - Save and return securityOrder
-     * NOTE: you will need to some helper methods (protected or private)
      *
      * @param orderDto market order
      * @return SecurityOrder from security_order table
