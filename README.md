@@ -68,7 +68,12 @@ Endpoins in this controller:
 - GET `/dashboard/profile/traderId/{traderId}`: how information on trader and the associated account
 
 # Architecture
-- Draw a component diagram which contains controller, service, DAO, storage layers (you can mimic the diagram from the guide)
+
+![Architecture](https://github.com/MiriamEA/trading_app/blob/master/TradingApp.svg)
+
+
+- Draw a component diagram which contains controller, service, DAO, storage layers (you can mimic the diagram from 
+the guide)
 - briefly explain the following logic layers or components (3-5 sentences for each)
   - Controller 
   - Service
@@ -78,7 +83,7 @@ Endpoins in this controller:
 
 # Improvements
 - implement orders with an asking price and a status pending
--
+- allow multiple accounts for one trader
 -
 -
 -
