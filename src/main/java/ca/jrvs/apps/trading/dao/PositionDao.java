@@ -30,8 +30,9 @@ public class PositionDao {
      *
      * @param accountId id of account
      * @return list containing all positions for given account
-     * @throws IllegalArgumentException                    if input is null
-     * @throws org.springframework.dao.DataAccessException if account cannot be found in db
+     * @throws IllegalArgumentException  if input is null
+     * @throws ResourceNotFoundException if accountId does not exist in db
+     * @throws java.sql.SQLException     if sql execution fails
      */
     public List<Position> findAllByAccountId(Integer accountId) {
         validateAccountId(accountId);
@@ -40,12 +41,28 @@ public class PositionDao {
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Position.class), accountId);
     }
 
+    /**
+     * Checks if an accountId is null
+     *
+     * @param accountId id to check
+     * @throws IllegalArgumentException if accountId is null
+     */
     private void validateAccountId(Integer accountId) {
         if (accountId == null) {
             throw new IllegalArgumentException("Acount id cannot be null.");
         }
     }
 
+    /**
+     * Finds the position for a given account and a given ticker
+     *
+     * @param accountId id of account
+     * @param ticker    ticker
+     * @return Position
+     * @throws IllegalArgumentException  if accountId is null, or ticker is empty
+     * @throws java.sql.SQLException     if sql execution fails
+     * @throws ResourceNotFoundException if accountId or ticker do not exist in db
+     */
     public Position findByAccountIdAndTicker(Integer accountId, String ticker) {
         validateAccountId(accountId);
         if (StringUtil.isEmpty(Collections.singletonList(ticker))) {
