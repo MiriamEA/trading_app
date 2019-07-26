@@ -18,7 +18,9 @@ IEX cloud.
 
 # REST API Usage
 ## Swagger
-What's swagger (1-2 sentences, you can copy from swagger docs). Why are we using it or who will benefit from it?
+Swagger is an open-source software famework that helps developers design, build, document, and consume REST APIs.
+By reading the API structure, it automatically builds an interactive API documentation.
+Swagger creates an user interface that allows easy interaction with the REST API.
 
 ## Quote Controller
 The quote controller is responsible for handling all request concerning the information on the securities that can be 
@@ -34,15 +36,36 @@ Endpoints in this controller:
 - PUT `/quote/iexMarketData`: update all quotes from IEX which is an external market data source
   
 ## Trader Controller
-- High-level description for trader controller(e.g. it can manage trader and account information. it can deposit and withdraw fund from a given account)
-- briefly explain your endpoints in this controller
+The trader controller manages the trader and account information. It allows users to create accounts,and deposit and 
+withdraw money from a given account.
+
+Endpoints in this controller:
+- DELETE `/trader/traderId/{traderId}`: delete a trader and their account if and only if there is no money in the 
+account and there are no open positions for that account
+- POST `/trader/`: create a new trader and an associated account
+- POST `/trader/firstname/{firstname}/lastname/{lastname}/dob/{dob}/country/{country}/email/{email}`: create a new 
+trader and an associated account
+- PUT `/trader/deposit/traderId/{traderId}/amount/{amount}`: deposit a positive amount in a given account
+- PUT `/trader/withdraw/traderId/{traderId}/amount/{amount}`: withdraw a positive amount from a given account (amount
+ cannot exceed available funds in the account)
+
 ##Order Controller
-- High-level description for this controller.
-- briefly explain your endpoints in this controller
-  - /order/MarketOrder: explain what is a market order, and how does your business logic work. 
+The order controller manages the buying and selling of securities. It has only one endpoint:
+- POST `order/MarketOrder`: An order consists of an account id, a size, and a ticker for a security.
+A positive size denotes buying securities and a negative size denotes selling securities. 
+Buying securities is only possible if there is enough money the account. 
+Selling is only possible if the account has enough position of the security (short positions are not allowed).
+If an order cannot be executed it will be canceled.
+
 ## App controller
 - GET `/health` to make sure SpringBoot app is up and running
+
 ## Dashboard controller
+The dashboard controller is for informational purpose, showing account and position status of a trader.
+
+Endpoins in this controller:
+- GET `/dashboard/portfolio/traderId/{traderId}`: show information on all positions (open and closed) of a trader
+- GET `/dashboard/profile/traderId/{traderId}`: how information on trader and the associated account
 
 # Architecture
 - Draw a component diagram which contains controller, service, DAO, storage layers (you can mimic the diagram from the guide)
