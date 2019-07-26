@@ -101,9 +101,9 @@ public class OrderService {
      */
     private SecurityOrder executeBuying(double totalPrice, SecurityOrder securityOrder, Account account) {
         if (totalPrice > account.getAmount()) {
-            securityOrder.setStatus(OrderStatus.CANCELED);
+            securityOrder.setStatus(OrderStatus.CANCELLED);
             securityOrderDao.save(securityOrder);
-            throw new IllegalArgumentException("Insufficient fund. Reqired: " + totalPrice + ", available: " + account.getAmount());
+            throw new IllegalArgumentException("Insufficient fund. Required: " + totalPrice + ", available: " + account.getAmount());
         } else {
             securityOrder.setStatus(OrderStatus.FILLED);
             accountDao.updateAmountById(account.getAmount() - totalPrice, account.getId());
@@ -124,7 +124,7 @@ public class OrderService {
     private SecurityOrder executeSelling(double totalPrice, SecurityOrder securityOrder, Account account) {
         Position position = positionDao.findByAccountIdAndTicker(account.getId(), securityOrder.getTicker());
         if (position.getPosition() < abs(securityOrder.getSize())) {
-            securityOrder.setStatus(OrderStatus.CANCELED);
+            securityOrder.setStatus(OrderStatus.CANCELLED);
             securityOrderDao.save(securityOrder);
             throw new IllegalArgumentException("Not enough position, only " + position.getPosition() + " available.");
         } else {
