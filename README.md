@@ -9,11 +9,33 @@ The data is stored in a PostgreSQL database and the information about the stock 
 IEX cloud.
 
 # Quick Start
-- Perquisites: Java, Docker, CentOS 7
-- PSQL init
-- git clone and mvn build
-- Start Springboot app using a shell script
-  - describe env vars
+
+**Prerequisites**
+- Docker
+- Java 8
+- IEX token to access market data (https://iexcloud.io/docs/api/)
+- PostgreSQL
+- Maven
+
+**Runing the app**
+- Clone git repository
+  ```
+  git clone https://github.com/MiriamEA/trading_app
+  ```
+- Build project with Maven
+  ```
+  mvn install -DSkipTests
+  ```
+- Start the app using a shell script
+  ```
+  bash run_trading_app.sh JDBC_HOST JDBC_USER JDBC_PASSWORD IEX_PUB_TOKEN
+  ```
+  - JDBC_HOST: name of the server with the database
+  - JDBC_USER: username for database
+  - JDBC_PASSWORD: password for database
+  - IEX_PUB_TOKEN: public token to an IEX cloud account
+
+
 - How to consume REST API? (Swagger screenshot and postman with OpenAPI Specification, e.g. http://35.231.122.184:5000/v2/api-docs
 
 # REST API Usage
@@ -80,14 +102,15 @@ It maps the request to the correct method call in the service layer.
 The service layers is responsible for all business logic. It validates user input.
 If the input is not valid, it throws an exception.
 Otherwise, it will process the input, call the corresponding methods in the Dao layer, and then processes the response 
-from the Dao layer. 
+from the Dao layer.
 
 **Dao**
 The dao layer takes input from the service layer and makes the correct call to the database or HTTP request to the IEX 
 cloud.
 It will process the HTTP response/result set into Java objects and return those to the service layer.
 
-**SpringBoot** webservlet/TomCat and IoC
+**SpringBoot**
+webservlet/TomCat and IoC
 
 **PSQL**
 The PostgreSQL database contains four tables and one view.
@@ -107,6 +130,6 @@ The trading app uses the IEX cloud to get real-time information on the securitie
 # Improvements
 - implement orders with an asking price and a status pending
 - allow multiple accounts for one trader
--
+- use transaction management for database
 -
 -
