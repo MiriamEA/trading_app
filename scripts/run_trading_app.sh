@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+cd "$(dirname "$0")"
+cd ..
 
 if [ "$#" -ne 4 ]; then
     echo "Illegal number of parameters"
