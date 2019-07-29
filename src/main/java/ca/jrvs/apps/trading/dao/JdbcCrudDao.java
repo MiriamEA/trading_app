@@ -23,7 +23,6 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
         ID newId = (ID) simpleJdbcInsert.executeAndReturnKey(parameterSource);
         logger.debug("New id: " + newId);
         entity.setId(newId);
-
         return entity;
     }
 
