@@ -14,14 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
 import static java.lang.Math.abs;
 
 @Service
-@Transactional
 public class OrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
@@ -102,6 +100,7 @@ public class OrderService {
     private SecurityOrder executeBuying(double totalPrice, SecurityOrder securityOrder, Account account) {
         if (totalPrice > account.getAmount()) {
             securityOrder.setStatus(OrderStatus.CANCELLED);
+            securityOrder.setNotes("Insufficient fund.");
             securityOrderDao.save(securityOrder);
             throw new IllegalArgumentException("Insufficient fund. Required: " + totalPrice + ", available: " + account.getAmount());
         } else {
@@ -109,6 +108,7 @@ public class OrderService {
             accountDao.updateAmountById(account.getAmount() - totalPrice, account.getId());
             securityOrderDao.save(securityOrder);
         }
+
         return securityOrder;
     }
 
@@ -125,6 +125,7 @@ public class OrderService {
         Position position = positionDao.findByAccountIdAndTicker(account.getId(), securityOrder.getTicker());
         if (position.getPosition() < abs(securityOrder.getSize())) {
             securityOrder.setStatus(OrderStatus.CANCELLED);
+            securityOrder.setNotes("Insufficient position.");
             securityOrderDao.save(securityOrder);
             throw new IllegalArgumentException("Not enough position, only " + position.getPosition() + " available.");
         } else {
