@@ -37,7 +37,7 @@ public class QuoteDaoIntTest {
     public void setup() {
 
         try (Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new EncodedResource(new FileSystemResource("/home/centos/dev/jrvs/bootcamp/trading_app/sql_ddl/schema.sql")));
+            ScriptUtils.executeSqlScript(connection, new EncodedResource(new FileSystemResource("src/test/resources/schema.sql")));
         } catch (SQLException e) {
             e.printStackTrace();
         }
