@@ -9,7 +9,7 @@ The data is stored in a PostgreSQL database and the information about the stock 
 IEX cloud.
 
 # Quick Start
-- Prequiresites: Java, Docker, CentOS 7
+- Perquisites: Java, Docker, CentOS 7
 - PSQL init
 - git clone and mvn build
 - Start Springboot app using a shell script
@@ -58,7 +58,8 @@ Selling is only possible if the account has enough position of the security (sho
 If an order cannot be executed it will be canceled.
 
 ## App controller
-- GET `/health` to make sure SpringBoot app is up and running
+The app controller can the used to make sure that the app is up and running.
+- GET `/health`: make sure SpringBoot app is up and running
 
 ## Dashboard controller
 The dashboard controller is for informational purpose, showing account and position status of a trader.
@@ -71,12 +72,14 @@ Endpoins in this controller:
 
 ![Architecture](https://github.com/MiriamEA/trading_app/blob/master/assets/TradingApp.svg)
 
-**Controller** The
+**Controller**
+The controller layer handles HTTP request to the REST API.
+It maps the request to the correct method call in the service layer.
 
 **Service**
 The service layers is responsible for all business logic. It validates user input.
 If the input is not valid, it throws an exception.
-Otherwise it will process the input, call the corresponding methods in the Dao layer, and then processes the response 
+Otherwise, it will process the input, call the corresponding methods in the Dao layer, and then processes the response 
 from the Dao layer. 
 
 **Dao**
@@ -98,6 +101,8 @@ The table "security_order" stores the account id of the account used for the ord
 canceled), the ticker of the traded security, the size of the order, the price of the order, and some notes.
 
 **IEX cloud**
+IEX cloud (https://iexcloud.io/) is a REST API that provides access to US and Canadian stock data.
+The trading app uses the IEX cloud to get real-time information on the securities that can be traded.
 
 # Improvements
 - implement orders with an asking price and a status pending
