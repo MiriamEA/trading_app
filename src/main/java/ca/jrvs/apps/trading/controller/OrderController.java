@@ -6,13 +6,12 @@ import ca.jrvs.apps.trading.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController {
 
@@ -26,7 +25,6 @@ public class OrderController {
     @ApiOperation(value = "Submit a market order", notes = "Submit a market order")
     @PostMapping("/marketOrder")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public SecurityOrder executeMarketOrder(MarketOrderDto order) {
         try {
             return orderService.executeMarketOrder(order);
