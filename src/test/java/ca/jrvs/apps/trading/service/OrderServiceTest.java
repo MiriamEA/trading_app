@@ -49,6 +49,10 @@ public class OrderServiceTest {
         mockQuote = new Quote();
         mockQuote.setTicker("AAPL");
         mockQuote.setAskPrice(8.0);
+        mockQuote.setAskSize(10);
+        mockQuote.setBidPrice(8.0);
+        mockQuote.setBidSize(10);
+        mockQuote.setLastPrice(8.0);
 
         mockPosition = new Position();
         mockPosition.setAccountId(10);
