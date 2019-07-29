@@ -55,15 +55,12 @@ public class OrderService {
         securityOrder.setAccountId(accountId);
         securityOrder.setSize(orderSize);
         securityOrder.setTicker(ticker);
-        double price = quoteDao.findById(ticker).getAskPrice();
-        securityOrder.setPrice(price);
         Account account = accountDao.findByAccountId(accountId);
-        double totalPrice = price * abs(orderSize);
 
         if (orderSize > 0) {
-            return executeBuying(totalPrice, securityOrder, account);
+            return executeBuying(securityOrder, account);
         } else {
-            return executeSelling(totalPrice, securityOrder, account);
+            return executeSelling(securityOrder, account);
         }
     }
 
@@ -91,13 +88,15 @@ public class OrderService {
     /**
      * Executes a buying order
      *
-     * @param totalPrice    price for buying
      * @param securityOrder order to execute
      * @param account       account buying position
      * @return security order updated with status
      * @throws IllegalArgumentException if account has not enough money
      */
-    private SecurityOrder executeBuying(double totalPrice, SecurityOrder securityOrder, Account account) {
+    private SecurityOrder executeBuying(SecurityOrder securityOrder, Account account) {
+        double price = quoteDao.findById(securityOrder.getTicker()).getAskPrice();
+        securityOrder.setPrice(price);
+        double totalPrice = price * securityOrder.getSize();
         if (totalPrice > account.getAmount()) {
             securityOrder.setStatus(OrderStatus.CANCELLED);
             securityOrder.setNotes("Insufficient fund.");
@@ -115,13 +114,15 @@ public class OrderService {
     /**
      * Executes a selling order.
      *
-     * @param totalPrice    price for selling
      * @param securityOrder order to sell
      * @param account       account making the sell
      * @return security order with updated status
      * @throws IllegalArgumentException if account has not enough position
      */
-    private SecurityOrder executeSelling(double totalPrice, SecurityOrder securityOrder, Account account) {
+    private SecurityOrder executeSelling(SecurityOrder securityOrder, Account account) {
+        double price = quoteDao.findById(securityOrder.getTicker()).getBidPrice();
+        securityOrder.setPrice(price);
+        double totalPrice = price * abs(securityOrder.getSize());
         Position position = positionDao.findByAccountIdAndTicker(account.getId(), securityOrder.getTicker());
         if (position.getPosition() < abs(securityOrder.getSize())) {
             securityOrder.setStatus(OrderStatus.CANCELLED);
