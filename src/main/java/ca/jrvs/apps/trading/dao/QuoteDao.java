@@ -3,6 +3,8 @@ package ca.jrvs.apps.trading.dao;
 import ca.jrvs.apps.trading.model.domain.Quote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -50,6 +52,13 @@ public class QuoteDao extends JdbcCrudDao<Quote, String> {
     @Override
     public Class getEntityClass() {
         return Quote.class;
+    }
+
+    @Override
+    public Quote save(Quote quote) {
+        SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(quote);
+        simpleJdbcInsert.execute(parameterSource);
+        return quote;
     }
 
     /**

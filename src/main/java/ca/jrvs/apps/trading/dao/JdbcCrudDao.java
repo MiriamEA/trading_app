@@ -20,13 +20,10 @@ public abstract class JdbcCrudDao<E extends Entity, ID> implements CrudResposito
     public E save(E entity) {
         SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(entity);
         SimpleJdbcInsert simpleJdbcInsert = getSimpleJdbcInsert();
-        if (simpleJdbcInsert.getGeneratedKeyNames().length == 1) {
-            ID newId = (ID) simpleJdbcInsert.executeAndReturnKey(parameterSource);
-            logger.debug("New id: " + newId);
-            entity.setId(newId);
-        } else {
-            simpleJdbcInsert.execute(parameterSource);
-        }
+        ID newId = (ID) simpleJdbcInsert.executeAndReturnKey(parameterSource);
+        logger.debug("New id: " + newId);
+        entity.setId(newId);
+
         return entity;
     }
 
