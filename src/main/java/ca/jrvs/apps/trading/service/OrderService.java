@@ -14,11 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
 import static java.lang.Math.abs;
 
+@Transactional
 @Service
 public class OrderService {
 
@@ -45,6 +47,7 @@ public class OrderService {
      * @throws org.springframework.dao.DataAccessException if unable to get data from DAO
      * @throws IllegalArgumentException                    for invalid input
      */
+    @Transactional(noRollbackFor = IllegalArgumentException.class)
     public SecurityOrder executeMarketOrder(MarketOrderDto orderDto) {
         validateOrder(orderDto);
 
