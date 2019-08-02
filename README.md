@@ -112,7 +112,7 @@ It maps the request to the correct method call in the service layer.
 **Service**
 The service layers is responsible for all business logic. It validates user input.
 If the input is not valid, it throws an exception.
-Otherwise, it will process the input, call the corresponding methods in the Dao layer, and then processes the response 
+Otherwise, it will process the input, call the corresponding methods in the dao layer, and then processes the response 
 from the Dao layer.
 
 **Dao**
@@ -120,8 +120,13 @@ The dao layer takes input from the service layer and makes the correct call to t
 cloud.
 It will process the HTTP response/result set into Java objects and return those to the service layer.
 
-**SpringBoot**
-webservlet/TomCat and IoC
+**Spring boot**
+This project is implemented using spring boot. 
+The core of the spring framework is the spring IoC (inversion of control) container.
+This container will create all objects, wire them together, configure them, and manage their complete life cycle from 
+creation till destruction.
+Another feature of spring boot is the embedded web server, which is responsible for handling incoming HTTP request.
+This application uses Apache Tomcat as its servlet container.
 
 **PSQL**
 The PostgreSQL database contains four tables and one view.
