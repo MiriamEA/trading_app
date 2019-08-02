@@ -1,3 +1,4 @@
+
 # Introduction
 The Trading App is an online stock trading simulation REST API.
 The application allows users to create accounts, deposit and withdraw money from the accounts, and use the money in 
@@ -39,12 +40,14 @@ IEX cloud.
   - The app includes a Swagger UI. 
     When running the app on a machine, the user interface can be accessed with the link 
     http://localhost:8080/swagger-ui.html on the same machine.
+    ![swagger-ui](https://github.com/MiriamEA/trading_app/blob/master/assets/Swagger-ui.JPG)
   - Postman is an application that can be used to send HTTP requests. 
     It allows users to import API specifications.
     When running the app on a machine, use the link http://localhost:8080/v2/api-docs to import the API 
     specifications to Postman on the same machine.
     All possible HTTP request for the app will be set up, just the request body or the path variable need to be edited.
     (Be sure to edit the collection and set the base URL to ```localhost:8080/``` before using it.)
+    ![postman](https://github.com/MiriamEA/trading_app/blob/master/assets/Postman.JPG)
 
 # REST API Usage
 ## Swagger
