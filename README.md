@@ -35,8 +35,16 @@ IEX cloud.
   - JDBC_PASSWORD: password for database
   - IEX_PUB_TOKEN: public token to an IEX cloud account
 
-
-- How to consume REST API? (Swagger screenshot and postman with OpenAPI Specification, e.g. http://35.231.122.184:5000/v2/api-docs
+-There are two easy ways to use this API: swagger and Postman.
+  - The app includes a Swagger UI. 
+    When running the app on a machine, the user interface can be accessed with the link 
+    http://localhost:8080/swagger-ui.html on the same machine.
+  - Postman is an application that can be used to send HTTP requests. 
+    It allows users to import API specifications.
+    When running the app on a machine, use the link http://localhost:8080/v2/api-docs to import the API 
+    specifications to Postman on the same machine.
+    All possible HTTP request for the app will be set up, just the request body or the path variable need to be edited.
+    (Be sure to edit the collection and set the base URL to ```localhost:8080/``` before using it.)
 
 # REST API Usage
 ## Swagger
@@ -86,7 +94,7 @@ The app controller can the used to make sure that the app is up and running.
 ## Dashboard controller
 The dashboard controller is for informational purpose, showing account and position status of a trader.
 
-Endpoins in this controller:
+Endpoints in this controller:
 - GET `/dashboard/portfolio/traderId/{traderId}`: show information on all positions (open and closed) of a trader
 - GET `/dashboard/profile/traderId/{traderId}`: how information on trader and the associated account
 
