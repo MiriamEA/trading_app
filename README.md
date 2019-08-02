@@ -26,7 +26,7 @@ IEX cloud.
   ```
   mvn install -DSkipTests
   ```
-- Start the app using a shell script
+- Start the app using a shell script. The script requires four arguments.
   ```
   bash run_trading_app.sh JDBC_HOST JDBC_USER JDBC_PASSWORD IEX_PUB_TOKEN
   ```
@@ -130,6 +130,6 @@ The trading app uses the IEX cloud to get real-time information on the securitie
 # Improvements
 - implement orders with an asking price and a status pending
 - allow multiple accounts for one trader
-- use transaction management for database
--
--
+- automatically update quote data regularly, so the data is never too old
+- handle quote data update after market closes properly
+- allow short positions
