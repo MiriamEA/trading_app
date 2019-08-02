@@ -103,7 +103,7 @@ Endpoints in this controller:
 
 # Architecture
 
-![Architecture](https://github.com/MiriamEA/trading_app/blob/master/assets/TradingApp.svg)
+
 
 **Controller**
 The controller layer handles HTTP request to the REST API.
