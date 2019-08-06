@@ -36,7 +36,7 @@ IEX cloud.
   - JDBC_PASSWORD: password for database
   - IEX_PUB_TOKEN: public token to an IEX cloud account
 
--There are two easy ways to use this API: swagger and Postman.
+- There are two easy ways to use this API: swagger and Postman.
   - The app includes a Swagger UI. 
     When running the app on a machine, the user interface can be accessed with the link 
     http://localhost:8080/swagger-ui.html on the same machine.
@@ -147,5 +147,5 @@ The trading app uses the IEX cloud to get real-time information on the securitie
 - implement orders with an asking price and a status pending
 - allow multiple accounts for one trader
 - automatically update quote data regularly, so the data is never too old
-- handle quote data update after market closes properly
+- handle quote data update after market closes 
 - allow short positions
