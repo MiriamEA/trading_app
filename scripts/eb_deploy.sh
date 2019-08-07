@@ -9,9 +9,8 @@ set -e
 #    exit 1
 #fi
 
-eb_env=$1
+eb_env=$2
 echo ${eb_env}
-echo $0
 
 rm -rf .elasticbeanstalk
 
