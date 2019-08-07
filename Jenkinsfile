@@ -20,14 +20,14 @@ pipeline {
             when { branch 'develop' }
             steps {
                 echo "Current branch is ${env.GIT_BRANCH}"
-                sh "./scripts/eb_deploy.sh trading-app TradingApp-dev2"
+                sh "./scripts/eb_deploy.sh TradingApp-dev2"
             }
         }
         stage('Deploy_prod') {
             when {branch 'master' }
             steps {
                 echo "Current branch is ${env.GIT_BRANCH}"
-                sh "./scripts/eb_deploy.sh trading-app TradingApp-prod"
+                sh "./scripts/eb_deploy.sh TradingApp-prod"
             }
         }
     }
