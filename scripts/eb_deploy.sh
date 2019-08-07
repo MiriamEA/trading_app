@@ -20,7 +20,7 @@ eb use ${eb_env}
 #Edit eb config file
 cat >> .elasticbeanstalk/config.yml <<_EOF
 deploy:
-    artifact: target/trading-1.0-SNAPSHOT-elastic-beanstalk.zip
+  artifact: target/trading-1.0-SNAPSHOT-elastic-beanstalk.zip
 _EOF
 
 #deploy
