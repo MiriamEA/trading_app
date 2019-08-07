@@ -11,12 +11,12 @@ set -e
 
 eb_env=$1
 echo ${eb_env}
+echo $0
 
 rm -rf .elasticbeanstalk
 
 #init eb for the project
 eb init trading-app --platform java --region us-east-1
-echo "at 1"
 eb use ${eb_env}
 
 #Edit eb config file
