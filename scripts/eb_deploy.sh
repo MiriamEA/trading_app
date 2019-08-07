@@ -3,11 +3,11 @@
 #exit if there is an error
 set -e
 
-if [-z "$1"]
-then
-    echo "usage $0 eb_env_name"
-    exit 1
-fi
+#if [-z "$1"]
+#then
+#    echo "usage $0 eb_env_name"
+#    exit 1
+#fi
 
 eb_env=$1
 
