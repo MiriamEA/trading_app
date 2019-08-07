@@ -44,10 +44,20 @@ public class AppConfig {
     @Bean
     public DataSource dataSource() {
 
-        String jdbcUrl = System.getenv("PSQL_URL");
-        String user = System.getenv("PSQL_USER");
-        String password = System.getenv("PSQL_PASSWORD");
+        String jdbcUrl;
+        String user;
+        String password;
 
+        if (!StringUtil.isEmpty(Arrays.asList(System.getenv("RDS_HOSTNAME")))) {
+            jdbcUrl = "jdbc:postgresql://" + System.getenv("RDS_HOSTNAME") + ":" + System.getenv("RDS_PORT") + "/jrvstrading";
+            user = System.getenv("RDS_USERNAME");
+            password = System.getenv("RDS_PASSWORD");
+        } else {
+
+            jdbcUrl = System.getenv("PSQL_URL");
+            user = System.getenv("PSQL_USER");
+            password = System.getenv("PSQL_PASSWORD");
+        }
         logger.error("JDBC:" + jdbcUrl);
 
         if (StringUtil.isEmpty(Arrays.asList(jdbcUrl, user, password))) {
