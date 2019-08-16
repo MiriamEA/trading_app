@@ -13,6 +13,6 @@ public class AppController {
     @GetMapping("health")
     @ResponseStatus(HttpStatus.OK)
     public String health() {
-        return "I'm very healthy and happy!";
+        return "I'm very healthy!";
     }
 }
