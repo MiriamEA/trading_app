@@ -1,0 +1,6 @@
+/home/centos/dev/jrvs/bootcamp/trading_app/src/test/java/ca/jrvs/apps/trading/dao/QuoteDaoIntTest.java
+/home/centos/dev/jrvs/bootcamp/trading_app/src/test/java/ca/jrvs/apps/trading/service/OrderServiceTest.java
+/home/centos/dev/jrvs/bootcamp/trading_app/src/test/java/ca/jrvs/apps/trading/TestConfig.java
+/home/centos/dev/jrvs/bootcamp/trading_app/src/test/java/ca/jrvs/apps/trading/dao/AccountDaoIntTest.java
+/home/centos/dev/jrvs/bootcamp/trading_app/src/test/java/ca/jrvs/apps/trading/service/FundTransferServiceTest.java
+/home/centos/dev/jrvs/bootcamp/trading_app/src/test/java/ca/jrvs/apps/trading/dao/MarketDataDaoIntTest.java
