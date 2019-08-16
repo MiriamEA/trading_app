@@ -25,7 +25,7 @@ IEX cloud.
   ```
 - Build project with Maven
   ```
-  mvn install -DSkipTests
+  mvn install -DskipTests
   ```
 - Start the app using a shell script. The script requires four arguments.
   ```
