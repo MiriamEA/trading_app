@@ -23,7 +23,7 @@ pipeline {
                 sh "./scripts/eb_deploy.sh TradingApp-dev2"
             }
         }
-        stage('Deploy_prod') {
+        stage('Deploy-prod') {
             when {branch 'master' }
             steps {
                 echo "Current branch is ${env.GIT_BRANCH}"
