@@ -89,11 +89,11 @@ Buying securities is only possible if there is enough money the account.
 Selling is only possible if the account has enough position of the security (short positions are not allowed).
 If an order cannot be executed it will be canceled.
 
-## App controller
+## App Controller
 The app controller can the used to make sure that the app is up and running.
 - GET `/health`: make sure SpringBoot app is up and running
 
-## Dashboard controller
+## Dashboard Controller
 The dashboard controller is for informational purpose, showing account and position status of a trader.
 
 Endpoints in this controller:
