@@ -1,4 +1,3 @@
-
 # Introduction
 The Trading App is an online stock trading simulation REST API.
 The application allows users to create accounts, deposit and withdraw money from the accounts, and use the money in 
@@ -82,9 +81,9 @@ trader and an associated account
 - PUT `/trader/withdraw/traderId/{traderId}/amount/{amount}`: withdraw a positive amount from a given account (amount
  cannot exceed available funds in the account)
 
-##Order Controller
+## Order Controller
 The order controller manages the buying and selling of securities. It has only one endpoint:
-- POST `order/MarketOrder`: An order consists of an account id, a size, and a ticker for a security.
+- POST `/order/MarketOrder`: An order consists of an account id, a size, and a ticker for a security.
 A positive size denotes buying securities and a negative size denotes selling securities. 
 Buying securities is only possible if there is enough money the account. 
 Selling is only possible if the account has enough position of the security (short positions are not allowed).
@@ -99,7 +98,7 @@ The dashboard controller is for informational purpose, showing account and posit
 
 Endpoints in this controller:
 - GET `/dashboard/portfolio/traderId/{traderId}`: show information on all positions (open and closed) of a trader
-- GET `/dashboard/profile/traderId/{traderId}`: how information on trader and the associated account
+- GET `/dashboard/profile/traderId/{traderId}`: show information on trader and the associated account
 
 # Architecture
 
